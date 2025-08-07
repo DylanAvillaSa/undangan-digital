@@ -6,20 +6,20 @@ import Image from "next/image";
 const page = () => {
   const router = useRouter();
   return (
-    <div className='w-full min-h-screen bg-gradient-to-br from-blue-900 via-blue-950 to-white text-white'>
+    <div className='w-full min-h-screen bg-gradient-to-br from-[#FDF6F0] via-[#FFF] to-[#FDF6F0] text-[#3B3B3B]'>
       {/* Hero Section */}
       <section className='px-6 md:px-24 py-24 flex flex-col-reverse md:flex-row items-center justify-between gap-16'>
-        <article className='flex flex-col items-start gap-6 max-w-xl text-blue-100'>
-          <h1 className='font-extrabold text-5xl leading-tight tracking-tight'>
+        <article className='flex flex-col items-start gap-6 max-w-xl'>
+          <h1 className='font-extrabold text-5xl leading-tight tracking-tight text-[#8B5E3C]'>
             Undangan Pernikahan Digital Elegan
           </h1>
-          <p className='text-lg text-gray-100'>
+          <p className='text-lg text-[#5A5A5A]'>
             Buat momen spesialmu jadi tak terlupakan dengan undangan digital
             yang elegan, cepat, dan hemat biaya.
           </p>
           <button
             onClick={() => router.push("/pemesanan")}
-            className='bg-white hover:bg-gray-100 text-blue-900 transition px-8 py-3 font-bold rounded-lg shadow-lg hover:scale-105'>
+            className='bg-[#8B5E3C] hover:bg-[#a76f49] text-white transition px-8 py-3 font-bold rounded-lg shadow-lg hover:scale-105'>
             Pesan Sekarang
           </button>
         </article>
@@ -37,8 +37,8 @@ const page = () => {
       </section>
 
       {/* Fitur Section */}
-      <section className='px-6 md:px-24 py-20 bg-white text-blue-900'>
-        <h2 className='text-3xl font-bold text-center mb-14'>
+      <section className='px-6 md:px-24 py-20 bg-white text-[#3B3B3B]'>
+        <h2 className='text-3xl font-bold text-center mb-14 text-[#8B5E3C]'>
           ✨ Fitur Unggulan
         </h2>
         <div className='grid md:grid-cols-3 gap-8'>
@@ -58,41 +58,29 @@ const page = () => {
           ].map((item, i) => (
             <div
               key={i}
-              className='p-6 bg-blue-50 rounded-2xl text-center shadow-md hover:shadow-xl transition transform hover:-translate-y-1 duration-300'>
-              <h3 className='font-semibold text-xl mb-2'>{item.title}</h3>
-              <p className='text-gray-700'>{item.desc}</p>
+              className='p-6 bg-[#F7EFE7] rounded-2xl text-center shadow-md hover:shadow-xl transition transform hover:-translate-y-1 duration-300'>
+              <h3 className='font-semibold text-xl mb-2 text-[#8B5E3C]'>
+                {item.title}
+              </h3>
+              <p className='text-[#5A5A5A]'>{item.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* Galeri Section */}
-      <section className='px-6 md:px-24 py-20 bg-blue-100 text-blue-900'>
-        <h2 className='text-3xl font-bold text-center mb-14'>
+      <section className='px-6 md:px-24 py-20 bg-[#F4EDE5] text-[#3B3B3B]'>
+        <h2 className='text-3xl font-bold text-center mb-14 text-[#8B5E3C]'>
           📸 Contoh Template
         </h2>
-        {/* <div className='grid md:grid-cols-3 gap-6'>
-          {[1, 2, 3].map((n) => (
-            <div
-              key={n}
-              className='rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition hover:scale-105 duration-300'>
-              <Image
-                src={`/images/template${n}.jpg`}
-                alt={`Template ${n}`}
-                width={400}
-                height={300}
-                className='w-full h-[260px] object-cover'
-              />
-            </div>
-          ))}
-        </div> */}
-
-        <p className='text-center'>Template belum tersedia untuk sekarang🖐️</p>
+        <p className='text-center text-[#5A5A5A]'>
+          Template belum tersedia untuk sekarang 🖐️
+        </p>
       </section>
 
       {/* Kenapa Memilih Kami */}
-      <section className='px-6 md:px-24 py-20 bg-white text-blue-900'>
-        <h2 className='text-3xl md:text-4xl font-extrabold text-center mb-14'>
+      <section className='px-6 md:px-24 py-20 bg-white text-[#3B3B3B]'>
+        <h2 className='text-3xl md:text-4xl font-extrabold text-center mb-14 text-[#8B5E3C]'>
           💡 Kenapa Memilih Kami?
         </h2>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto'>
@@ -120,11 +108,13 @@ const page = () => {
           ].map((item, index) => (
             <div
               key={index}
-              className='flex items-start gap-4 p-5 bg-blue-50 rounded-xl shadow hover:shadow-md transition'>
+              className='flex items-start gap-4 p-5 bg-[#F7EFE7] rounded-xl shadow hover:shadow-md transition'>
               <div className='text-3xl'>{item.icon}</div>
               <div>
-                <h3 className='text-xl font-semibold mb-1'>{item.title}</h3>
-                <p className='text-gray-700'>{item.desc}</p>
+                <h3 className='text-xl font-semibold mb-1 text-[#8B5E3C]'>
+                  {item.title}
+                </h3>
+                <p className='text-[#5A5A5A]'>{item.desc}</p>
               </div>
             </div>
           ))}
@@ -132,7 +122,7 @@ const page = () => {
       </section>
 
       {/* CTA Section */}
-      <section className='px-6 md:px-24 py-20 bg-blue-950 text-white text-center'>
+      <section className='px-6 md:px-24 py-20 bg-[#8B5E3C] text-white text-center'>
         <h2 className='text-3xl font-bold mb-6'>📨 Siap Buat Undanganmu?</h2>
         <p className='mb-6 text-lg'>
           Klik tombol di bawah ini untuk memesan undangan digital impianmu
@@ -140,13 +130,13 @@ const page = () => {
         </p>
         <button
           onClick={() => router.push("/pemesanan")}
-          className='bg-white text-blue-900 hover:bg-gray-100 px-10 py-4 rounded-xl font-bold shadow-xl hover:scale-105 transition'>
+          className='bg-white text-[#8B5E3C] hover:bg-gray-100 px-10 py-4 rounded-xl font-bold shadow-xl hover:scale-105 transition'>
           Mulai Pesan Sekarang
         </button>
       </section>
 
       {/* Footer */}
-      <footer className='bg-blue-950 text-center text-sm py-6 text-gray-400'>
+      <footer className='bg-[#8B5E3C] text-center text-sm py-6 text-[#F4EDE5]'>
         © {new Date().getFullYear()} UndanganDigital.id — All Rights Reserved
       </footer>
     </div>

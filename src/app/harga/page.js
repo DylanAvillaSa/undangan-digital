@@ -14,8 +14,8 @@ const pricingPlans = [
       "Photo Gallery (2)",
       "Template (1)",
     ],
-    color: "border-amber-500 text-amber-600",
-    bg: "bg-amber-50",
+    color: "border-[#D6D6D6] text-[#8B5E3C]",
+    bg: "bg-[#F4EDE5]",
   },
   {
     name: "Silver",
@@ -33,8 +33,8 @@ const pricingPlans = [
       "Amplop Digital",
       "Musik",
     ],
-    color: "border-gray-400 text-gray-700",
-    bg: "bg-gray-100",
+    color: "border-[#B8B8B8] text-[#3B3B3B]",
+    bg: "bg-[#FDF6F0]",
   },
   {
     name: "Gold",
@@ -48,8 +48,8 @@ const pricingPlans = [
       "Photo Gallery (16)",
       "Link Streaming",
     ],
-    color: "border-yellow-500 text-yellow-600",
-    bg: "bg-yellow-50",
+    color: "border-[#8B5E3C] text-[#8B5E3C]",
+    bg: "bg-[#F4EDE5]",
   },
   {
     name: "Platinum",
@@ -60,15 +60,15 @@ const pricingPlans = [
       "Desain eksklusif",
       "Ucapan Melalui Video",
     ],
-    color: "border-rose-500 text-rose-700",
-    bg: "bg-rose-50",
+    color: "border-[#7B3F00] text-[#7B3F00]",
+    bg: "bg-[#FDF6F0]",
   },
 ];
 
 const HargaPage = () => {
   return (
-    <section className='min-h-screen bg-gradient-to-br from-white to-blue-50 px-6 md:px-24 py-16'>
-      <h1 className='text-4xl font-extrabold text-center text-blue-900 mb-12'>
+    <section className='min-h-screen bg-[#FDF6F0] px-6 md:px-24 py-16 mt-6'>
+      <h1 className='text-4xl font-extrabold text-center text-[#8B5E3C] mb-12'>
         Pilihan Paket Undangan
       </h1>
 
@@ -76,13 +76,15 @@ const HargaPage = () => {
         {pricingPlans.map((plan, index) => (
           <div
             key={index}
-            className={`rounded-2xl p-6 border-2 ${plan.color} ${plan.bg} hover:shadow-2xl transition duration-300 h-full flex flex-col justify-between`}>
+            className={`rounded-2xl p-6 border-2 ${plan.color} ${plan.bg} hover:shadow-lg transition duration-300 h-full flex flex-col justify-between`}>
             <div>
               <h2 className={`text-2xl font-bold mb-2 ${plan.color}`}>
                 {plan.name}
               </h2>
-              <p className='text-lg font-semibold mb-4'>{plan.price}</p>
-              <ul className='text-sm space-y-3 mb-6'>
+              <p className='text-lg font-semibold mb-4 text-[#3B3B3B]'>
+                {plan.price}
+              </p>
+              <ul className='text-sm space-y-3 mb-6 text-[#3B3B3B]'>
                 {plan.features.map((feature, i) => (
                   <li
                     key={i}
@@ -96,7 +98,7 @@ const HargaPage = () => {
                 ))}
               </ul>
             </div>
-            <button className='w-full mt-auto bg-blue-900 text-white py-2.5 rounded-xl hover:bg-blue-800 transition'>
+            <button className='w-full mt-auto bg-[#8B5E3C] text-white py-2.5 rounded-xl hover:bg-[#74492F] transition'>
               Pilih Paket
             </button>
           </div>
