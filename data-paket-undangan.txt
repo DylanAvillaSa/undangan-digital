@@ -1,0 +1,37 @@
+amplop digital
+countdown
+free revisi
+
+
+INSERT INTO paket (Bronze, Silver, Gold, Platinum)
+VALUES
+(
+  '{
+    "name": "Bronze",
+    "price": "Rp. 100.000 Promo 28%",
+    "features": ["Template basic", "Jumlah undangan unlimited","Free Revisi", "Peta Lokasi", "Photo Slider (2)", "Photo Gallery (2)", "Template (1)"],
+    "color": "border-amber-600 text-amber-700",
+    "bg": "bg-amber-50"
+  }',
+  '{
+    "name": "Silver",
+    "price": "Rp. 200.000 Promo 32%",
+    "features": ["Semua fitur Bronze", "Tampilan lebih elegan", "Jumlah undangan unlimited", "Photo Slider (4)", "Relationship Story","Ucapan dan Doa" ,"Photo Gallery (4)", "Template (2)", "Countdown", "Amplop Digital", "Musik"],
+    "color": "border-silver-600 text-silver-700",
+    "bg": "bg-silver-50"
+  }',
+  '{
+    "name": "Gold",
+    "price": "Rp. 300.000 Promo 36%",
+    "features": ["Semua fitur Silver", "Video", "Story Instagram","Photo Slider (8)", "Variasi warna (3)", "Photo Gallery (16)", "Link Streaming"],
+    "color": "border-gold-600 text-gold-700",
+    "bg": "bg-gold-50"
+  }',
+  '{
+    "name": "Platinum",
+    "price": "Rp. 1.000.000",
+    "features": ["Semua fitur Gold", "Custom Tema", "Desain eksklusif", "Ucapan Melalui Video"],
+    "color": "border-rose-500 text-rose-700",
+    "bg": "bg-rose-50"
+  }'
+);
