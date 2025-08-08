@@ -17,7 +17,10 @@ const Navbar = () => {
   }, [pathname]);
 
   // sembunyikan navbar di halaman tertentu
-  const isHiddenPage = pathname === "/dashboard-admin" || pathname === "/auth";
+  const isHiddenPage =
+    pathname === "/dashboard-admin" ||
+    pathname === "/auth" ||
+    pathname === "/template-undangan/template-1";
   if (isHiddenPage) return null;
 
   return (
