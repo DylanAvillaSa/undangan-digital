@@ -1,12 +1,29 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Countdown from "react-countdown";
 
 import { useState, useRef, useEffect } from "react";
 
 import Image from "next/image";
 import CountdownSection from "@/components/counter/CountDown";
+
+const messages = [
+  {
+    name: "Team Indoinvite.com",
+    time: "2025-08-09 16:17:53",
+    message: "Semoga acaranya berjalan dengan lancar dan sesuai rencana 🙏🙏🙏",
+  },
+  {
+    name: "Budi Santoso",
+    time: "2025-08-09 17:45:10",
+    message: "Selamat menempuh hidup baru, semoga bahagia selalu ❤️",
+  },
+  {
+    name: "Siti Aminah",
+    time: "2025-08-09 18:05:22",
+    message: "Barakallah, semoga menjadi keluarga sakinah mawaddah warahmah 🤲",
+  },
+];
 
 export default function Home() {
   const rsvpRef = useRef(null);
@@ -390,6 +407,107 @@ export default function Home() {
                 </div>
               )
             )}
+          </section>
+
+          {/* form rsvp */}
+          <section
+            className="py-10 px-4 bg-cover bg-center"
+            style={{ backgroundImage: "url('/marble-texture.png')" }}
+          >
+            <div className="max-w-md mx-auto bg-white/80 backdrop-blur-md rounded-2xl p-6 shadow-lg border border-yellow-300">
+              {/* Judul */}
+              <h1 className="text-center text-3xl font-[GreatVibes] text-[#A47148] mb-6">
+                Kehadiran
+              </h1>
+
+              {/* Form */}
+              <form className="space-y-4">
+                {/* Nama */}
+                <div>
+                  <label className="block text-sm text-gray-700 mb-1">
+                    Nama
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Masukkan nama"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-[#A47148]"
+                  />
+                </div>
+
+                {/* Ucapan */}
+                <div>
+                  <label className="block text-sm text-gray-700 mb-1">
+                    Ucapan
+                  </label>
+                  <textarea
+                    placeholder="Tulis ucapan untuk mempelai"
+                    rows="4"
+                    className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-[#A47148]"
+                  ></textarea>
+                </div>
+
+                {/* Kehadiran */}
+                <div>
+                  <label className="block text-sm text-gray-700 mb-1">
+                    Kehadiran
+                  </label>
+                  <select className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:border-[#A47148]">
+                    <option value="">Pilih opsi</option>
+                    <option value="hadir">Hadir</option>
+                    <option value="tidak">Tidak Hadir</option>
+                  </select>
+                </div>
+
+                {/* Tombol */}
+                <button
+                  type="submit"
+                  className="w-full bg-[#A47148] hover:bg-[#8b5e3b] text-white py-2 rounded-lg transition duration-300"
+                >
+                  Kirim
+                </button>
+              </form>
+            </div>
+          </section>
+
+          {/* section tamu undangan */}
+          <section
+            className="py-8 px-4 bg-cover bg-center"
+            style={{ backgroundImage: "url('/marble-texture.png')" }}
+          >
+            <div className="max-w-lg mx-auto bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-5 border border-yellow-200">
+              {/* Statistik */}
+              <div className="flex flex-wrap gap-4 text-sm mb-4">
+                <div className="flex items-center gap-1 text-blue-600">
+                  <span className="w-3 h-3 rounded-full bg-blue-600"></span>
+                  {messages.length} Total Ucapan
+                </div>
+                <div className="flex items-center gap-1 text-green-600">
+                  <span className="w-3 h-3 rounded-full bg-green-600"></span>
+                  {messages.filter((m) => m.hadir).length} Orang Menyatakan
+                  Hadir
+                </div>
+              </div>
+
+              <hr className="border-gray-300 mb-4" />
+
+              {/* List Ucapan */}
+              <div className="space-y-4 max-h-72 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-yellow-300 scrollbar-track-transparent">
+                {messages.map((msg, i) => (
+                  <div
+                    key={i}
+                    className="bg-white rounded-xl p-4 shadow-sm border border-gray-100"
+                  >
+                    <p className="font-bold text-gray-800">
+                      {msg.name}{" "}
+                      <span className="font-normal italic text-gray-500 text-sm">
+                        - {msg.time}
+                      </span>
+                    </p>
+                    <p className="text-gray-700 mt-1">{msg.message}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </section>
         </motion.div>
       )}
