@@ -9,7 +9,7 @@ import CountdownSection from "@/components/counter/CountDown";
 
 const messages = [
   {
-    name: "Team Indoinvite.com",
+    name: "Team Our Journey",
     time: "2025-08-09 16:17:53",
     message: "Semoga acaranya berjalan dengan lancar dan sesuai rencana 🙏🙏🙏",
   },
