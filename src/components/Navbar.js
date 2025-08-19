@@ -20,7 +20,9 @@ const Navbar = () => {
   const isHiddenPage =
     pathname === "/dashboard-admin" ||
     pathname === "/auth" ||
-    pathname === "/template-undangan/template-1";
+    pathname === "/template-undangan/template-1" ||
+    pathname === "/template-undangan/template-2" ||
+    pathname === "/template-undangan/template-3";
   if (isHiddenPage) return null;
 
   return (
