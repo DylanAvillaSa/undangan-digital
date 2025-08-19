@@ -242,7 +242,7 @@ const Page = () => {
 
       {/* Footer */}
       <footer className='bg-[#111111] text-center text-sm py-6 text-[#EDEDED]'>
-        © {new Date().getFullYear()} Historia — All Rights Reserved
+        © {new Date().getFullYear()} Our Journey — All Rights Reserved
       </footer>
     </div>
   );

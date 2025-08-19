@@ -32,7 +32,7 @@ const Navbar = () => {
         <Link
           href='/'
           className='text-2xl md:text-3xl font-extrabold tracking-tight text-black'>
-          Hystoria
+          Our Journey
         </Link>
 
         {/* Desktop Navigation */}
