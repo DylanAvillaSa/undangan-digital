@@ -30,10 +30,11 @@ const CountdownRenderer = ({ days, hours, minutes, seconds, completed }) => {
   }
 };
 
-export default function CountdownSection() {
+export default function CountdownSection({ template }) {
   return (
     <div>
       <Countdown
+        template={template}
         date={new Date("2025-12-29T10:00:00")}
         renderer={CountdownRenderer}
       />
