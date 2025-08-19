@@ -1,6 +1,19 @@
-import React from "react";
+"use client";
+
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 
 const FormPemesananPage = () => {
+  const [selectedPaket, setSelectedPaket] = useState("");
+  const searchParam = useSearchParams();
+  const paketQuery = searchParam.get("paket");
+
+  useEffect(() => {
+    if (paketQuery) {
+      setSelectedPaket(paketQuery);
+    }
+  }, [paketQuery]);
+
   return (
     <div className='min-h-screen bg-gradient-to-br from-white to-gray-100 flex items-center justify-center px-4 py-16'>
       <div className='w-full max-w-2xl bg-white mt-7 rounded-2xl shadow-xl p-8'>
@@ -45,17 +58,20 @@ const FormPemesananPage = () => {
             />
           </div>
 
+          {/* Pilih Paket */}
           <div>
             <label className='block mb-2 text-sm font-medium text-gray-700'>
               Pilih Paket
             </label>
             <select
               required
+              value={selectedPaket}
+              onChange={(e) => setSelectedPaket(e.target.value)}
               className='w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black bg-white text-gray-800'>
               <option value=''>-- Pilih Paket --</option>
-              <option value='silver'>Silver</option>
-              <option value='gold'>Gold</option>
-              <option value='platinum'>Platinum</option>
+              <option value='Silver'>Silver</option>
+              <option value='Gold'>Gold</option>
+              <option value='Platinum'>Platinum</option>
             </select>
           </div>
 

@@ -17,7 +17,7 @@ const Page = () => {
           transition={{ duration: 0.8 }}
           className='flex flex-col items-start gap-6 max-w-xl'>
           <h1 className='font-extrabold text-5xl md:text-6xl leading-tight tracking-tight text-[#111111]'>
-            Undangan Digital <br /> Monochrome Elegan
+            Undangan Digital
           </h1>
           <p className='text-lg text-[#555555]'>
             Rayakan momen spesialmu dengan undangan digital modern, minimalis,
@@ -133,6 +133,97 @@ const Page = () => {
         </div>
       </section>
 
+      {/* Paket Section */}
+      <section className='px-6 md:px-24 py-20 bg-gradient-to-br from-[#FAFAFA] to-[#F1F1F1] text-[#2B2B2B]'>
+        <h2 className='text-3xl md:text-4xl font-extrabold text-center mb-14 text-[#111111]'>
+          Pilihan Paket
+        </h2>
+
+        <div className='grid grid-cols-1 justify-center md:grid-cols-3 gap-8'>
+          {[
+            {
+              name: "Silver",
+              price: "Rp. 200.000 Promo 32%",
+              features: [
+                "Semua fitur Bronze",
+                "Tampilan lebih elegan",
+                "Jumlah undangan unlimited",
+                "Photo Slider (4)",
+                "Relationship Story",
+                "Ucapan dan Doa",
+                "Photo Gallery (4)",
+                "Template (2)",
+                "Countdown",
+                "Amplop Digital",
+                "Musik",
+              ],
+              accent: "from-[#D7D7D7] to-[#AFAFAF]",
+            },
+            {
+              name: "Gold",
+              price: "Rp. 300.000 Promo 36%",
+              features: [
+                "Semua fitur Silver",
+                "Video",
+                "Story Instagram",
+                "Photo Slider (8)",
+                "Variasi warna (3)",
+                "Photo Gallery (16)",
+                "Link Streaming",
+              ],
+              accent: "from-[#FAD961] to-[#F76B1C]",
+              popular: true,
+            },
+            {
+              name: "Platinum",
+              price: "Rp. 1.000.000",
+              features: [
+                "Semua fitur Gold",
+                "Custom Tema",
+                "Desain eksklusif",
+                "Ucapan Melalui Video",
+              ],
+              accent: "from-[#E0C3FC] to-[#8EC5FC]",
+            },
+          ].map((pkg, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -8 }}
+              className={`relative rounded-2xl shadow-lg bg-white/80 backdrop-blur-md border border-gray-200 p-6 flex flex-col justify-between transition`}>
+              {/* Highlight Badge */}
+              {pkg.popular && (
+                <span className='absolute -top-4 left-1/2 -translate-x-1/2 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md'>
+                  ⭐ Paling Populer
+                </span>
+              )}
+
+              <div>
+                <h3
+                  className={`text-2xl font-bold mb-2 bg-gradient-to-r ${pkg.accent} bg-clip-text text-transparent`}>
+                  {pkg.name}
+                </h3>
+                <p className='font-semibold mb-4 text-[#111]'>{pkg.price}</p>
+                <ul className='space-y-2 text-sm text-[#444] mb-6'>
+                  {pkg.features.map((feat, idx) => (
+                    <li
+                      key={idx}
+                      className='flex items-start gap-2'>
+                      ✅ <span>{feat}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <button
+                onClick={() => router.push(`/pemesanan?paket=${pkg.name}`)}
+                className='mt-auto bg-gradient-to-r from-black to-gray-800 hover:from-gray-900 hover:to-black text-white px-6 py-3 rounded-xl font-semibold shadow-lg transition'>
+                Pesan Sekarang
+              </button>
+            </motion.div>
+          ))}
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className='px-6 md:px-24 py-20 bg-black text-white text-center'>
         <h2 className='text-3xl font-bold mb-6'>
@@ -151,7 +242,7 @@ const Page = () => {
 
       {/* Footer */}
       <footer className='bg-[#111111] text-center text-sm py-6 text-[#EDEDED]'>
-        © {new Date().getFullYear()} UndanganDigital.id — All Rights Reserved
+        © {new Date().getFullYear()} Historia — All Rights Reserved
       </footer>
     </div>
   );

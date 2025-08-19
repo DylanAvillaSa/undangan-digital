@@ -7,18 +7,19 @@ import { useRouter } from "next/navigation";
 const templates = [
   {
     id: 1,
-    image: "/template/template-1.png",
-    name: "Template 01",
-    paket: "Silver",
-    link: "/template-undangan/template-1",
-  },
-  {
-    id: 2,
     image: "/template/template-2.png",
-    name: "Template 02",
+    name: "Template 01",
     paket: "Silver",
     link: "/template-undangan/template-2",
   },
+  {
+    id: 2,
+    image: "/template/template-1.png",
+    name: "Template 02",
+    paket: "Silver",
+    link: "/template-undangan/template-1",
+  },
+
   {
     id: 3,
     image: "/template/template-3.png",
