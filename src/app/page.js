@@ -145,7 +145,6 @@ const Page = () => {
               name: "Silver",
               price: "Rp. 200.000 Promo 32%",
               features: [
-                "Semua fitur Bronze",
                 "Tampilan lebih elegan",
                 "Jumlah undangan unlimited",
                 "Photo Slider (4)",
