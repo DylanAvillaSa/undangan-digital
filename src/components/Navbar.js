@@ -22,7 +22,8 @@ const Navbar = () => {
     pathname === "/auth" ||
     pathname === "/template-undangan/template-1" ||
     pathname === "/template-undangan/template-2" ||
-    pathname === "/template-undangan/template-3";
+    pathname === "/template-undangan/template-3" ||
+    pathname === "/template-undangan/template-4";
   if (isHiddenPage) return null;
 
   return (
