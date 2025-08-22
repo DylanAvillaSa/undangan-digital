@@ -23,7 +23,9 @@ const Navbar = () => {
     pathname === "/template-undangan/template-1" ||
     pathname === "/template-undangan/template-2" ||
     pathname === "/template-undangan/template-3" ||
-    pathname === "/template-undangan/template-4";
+    pathname === "/template-undangan/template-4" ||
+    pathname === "/template-undangan/template-5";
+
   if (isHiddenPage) return null;
 
   return (
