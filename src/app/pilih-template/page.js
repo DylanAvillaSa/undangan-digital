@@ -41,6 +41,20 @@ const templates = [
     paket: "Gold",
     link: "/template-undangan/template-5",
   },
+  {
+    id: 6,
+    image: "/template/template-6.png",
+    name: "Template 03",
+    paket: "Gold",
+    link: "/template-undangan/template-6",
+  },
+  {
+    id: 7,
+    image: "/template/template-7.png",
+    name: "Template 04",
+    paket: "Gold",
+    link: "/template-undangan/template-7",
+  },
 ];
 
 const PilihTemplatePage = () => {
