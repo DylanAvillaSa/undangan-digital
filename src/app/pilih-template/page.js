@@ -55,6 +55,48 @@ const templates = [
     paket: "Gold",
     link: "/template-undangan/template-7",
   },
+  {
+    id: 8,
+    image: "/template/template-7.png",
+    name: "Template 05",
+    paket: "Gold",
+    link: "/template-undangan/template-8",
+  },
+  {
+    id: 9,
+    image: "/template/template-9.png",
+    name: "Template 06",
+    paket: "Gold",
+    link: "/template-undangan/template-9",
+  },
+  {
+    id: 10,
+    image: "/template/template-10.png",
+    name: "Template 07",
+    paket: "Gold",
+    link: "/template-undangan/template-10",
+  },
+  {
+    id: 11,
+    image: "/template/template-11.png",
+    name: "Template 08",
+    paket: "Gold",
+    link: "/template-undangan/template-11",
+  },
+  {
+    id: 12,
+    image: "/template/template-12.png",
+    name: "Template 09",
+    paket: "Gold",
+    link: "/template-undangan/template-12",
+  },
+  {
+    id: 13,
+    image: "/template/template-13.png",
+    name: "Template 01",
+    paket: "Platinum",
+    link: "/template-undangan/template-13",
+  },
 ];
 
 const PilihTemplatePage = () => {
@@ -65,10 +107,7 @@ const PilihTemplatePage = () => {
     setCategory(kategori);
   };
 
-  const filteredTemplates =
-    category === "Silver"
-      ? templates.filter((t) => t.paket === "Silver")
-      : templates.filter((t) => t.paket !== "Silver");
+  const filteredTemplates = templates.filter((t) => t.paket === category);
 
   return (
     <section className='min-h-screen w-full bg-gradient-to-br from-white to-gray-100 px-6 md:px-24 py-24'>
