@@ -12,6 +12,7 @@
     "@fontsource/great-vibes": "^5.2.6",
     "fabric": "^6.7.1",
     "framer-motion": "^12.23.12",
+    "locomotive-scroll": "^4.1.4",
     "lottie-react": "^2.4.1",
     "lucide-react": "^0.536.0",
     "next": "15.4.6",
