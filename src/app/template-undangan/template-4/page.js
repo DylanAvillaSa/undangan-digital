@@ -3,11 +3,22 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
-import { PlayCircle, PauseCircle } from "lucide-react";
+import {
+  PlayCircle,
+  PauseCircle,
+  Share2,
+  Copy,
+  Sun,
+  Moon,
+  Heart,
+  MapPin,
+  Calendar,
+  Gift,
+} from "lucide-react";
 import CountdownSection from "@/components/counter/CountDown";
 
 // ===== Dummy Messages (Ucapan & Doa) =====
-const messages = [
+const initialMessages = [
   {
     name: "Team Our Journey",
     time: "2025-08-09 16:17:53",
@@ -24,18 +35,12 @@ const messages = [
 const THEMES = {
   royal: {
     name: "Royal Gold",
-    // background page
     pageBg:
       "bg-[radial-gradient(1200px_600px_at_20%_-10%,#fff6d5,transparent),radial-gradient(1200px_600px_at_120%_10%,#ffe6a7,transparent)] bg-[#fff9ec]",
-    // header gradient (judul)
     headerGrad: "bg-gradient-to-r from-amber-700 via-yellow-700 to-orange-700",
-    // card / section
     card: "bg-gradient-to-br from-[#fff6da] via-[#fff0c5] to-[#ffe9a8]",
-    // accent border
     border: "border-amber-400",
-    // text
     textMain: "text-amber-900",
-    // button gradient
     cta: "bg-gradient-to-r from-amber-600 via-yellow-500 to-orange-500 hover:from-amber-500 hover:to-orange-400",
     chip: "bg-amber-100 text-amber-800",
   },
@@ -70,11 +75,23 @@ export default function GoldTemplate() {
   const [opened, setOpened] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
   const [theme, setTheme] = useState("royal");
+  const [dark, setDark] = useState(false);
 
   const [formData, setFormData] = useState({
     nama: "",
     kehadiran: "",
   });
+
+  const [messages, setMessages] = useState(() => {
+    try {
+      const raw = localStorage.getItem("msgs_v1");
+      return raw ? JSON.parse(raw) : initialMessages;
+    } catch (e) {
+      return initialMessages;
+    }
+  });
+
+  const [guestForm, setGuestForm] = useState({ name: "", message: "" });
 
   const T = THEMES[theme];
 
@@ -87,6 +104,10 @@ export default function GoldTemplate() {
       }, 900);
     }
   }, [opened]);
+
+  useEffect(() => {
+    localStorage.setItem("msgs_v1", JSON.stringify(messages));
+  }, [messages]);
 
   const handleChange = (e) =>
     setFormData((s) => ({ ...s, [e.target.name]: e.target.value }));
@@ -108,10 +129,48 @@ export default function GoldTemplate() {
     }
   };
 
+  const addGuestMessage = (e) => {
+    e.preventDefault();
+    if (!guestForm.name || !guestForm.message) return;
+    const newMsg = {
+      name: guestForm.name,
+      time: new Date().toISOString().slice(0, 19).replace("T", " "),
+      message: guestForm.message,
+    };
+    setMessages((s) => [newMsg, ...s]);
+    setGuestForm({ name: "", message: "" });
+  };
+
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      alert("Link berhasil disalin ✅");
+    } catch (e) {
+      alert("Gagal menyalin link. Coba manual.");
+    }
+  };
+
+  const shareWA = () => {
+    const text = encodeURIComponent(
+      "Undangan pernikahan Vidi & Riffany - Cek di: " + window.location.href
+    );
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+  };
+
+  // simple QR via google chart API (replace coordinates / text if needed)
+  const qrSrc = `https://chart.googleapis.com/chart?cht=qr&chs=300x300&chl=${encodeURIComponent(
+    window?.location?.href || "https://example.com"
+  )}`;
+
   return (
     <main
-      className={`min-h-screen ${T.pageBg} relative overflow-hidden`}
+      className={`min-h-screen ${T.pageBg} relative overflow-hidden ${
+        dark ? "dark" : ""
+      }`}
       style={{ fontFamily: "'Playfair Display', serif" }}>
+      {/* Global wrapper for dark mode background */}
+      <div className={`${dark ? "bg-slate-900 text-slate-100" : ""}`}></div>
+
       {/* ===== Musik Latar + Controller ===== */}
       <audio
         ref={audioRef}
@@ -120,12 +179,29 @@ export default function GoldTemplate() {
         src='/music/bg-wedding.mp3'
         className='hidden'
       />
-      <button
-        onClick={toggleAudio}
-        className={`fixed z-40 bottom-4 right-4 p-3 rounded-full shadow-lg ${T.cta} text-white`}
-        aria-label='Toggle Music'>
-        {isPlaying ? <PauseCircle size={28} /> : <PlayCircle size={28} />}
-      </button>
+
+      {/* Floating controls: audio, theme, dark */}
+      <div className='fixed z-40 bottom-4 right-4 flex flex-col gap-3 items-end'>
+        <button
+          onClick={toggleAudio}
+          className={`p-3 rounded-full shadow-lg ${T.cta} text-white flex items-center gap-2`}
+          aria-label='Toggle Music'>
+          {isPlaying ? <PauseCircle size={20} /> : <PlayCircle size={20} />}
+          <span className='hidden md:inline text-sm'>Music</span>
+        </button>
+        <button
+          onClick={() => setDark((d) => !d)}
+          className='p-3 rounded-full shadow-lg bg-white'
+          aria-label='Toggle Dark'>
+          {dark ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+        <button
+          onClick={copyLink}
+          className='p-3 rounded-full shadow-lg bg-white'
+          aria-label='Copy Link'>
+          <Copy size={18} />
+        </button>
+      </div>
 
       {/* ===== Ornamen Background (Parallax-ish) ===== */}
       <Image
@@ -208,10 +284,16 @@ export default function GoldTemplate() {
 
       {/* ===== UNDANGAN LENGKAP ===== */}
       {opened && (
-        <div className='relative z-10'>
-          {/* Countdown */}
-          <div className='pt-8'>
-            <CountdownSection date='2025-11-25T08:00:00' />
+        <div className='relative z-10 pb-24'>
+          {/* introduction section */}
+          <div className='w-full flex justify-center mt-20'>
+            <Image
+              src='/images/tmp.jpg'
+              width={1920}
+              height={1080}
+              alt='Pasangan'
+              className='object-cover h-[250px] rounded-md w-[250px]'
+            />
           </div>
 
           {/* Nama & Detail */}
@@ -220,9 +302,13 @@ export default function GoldTemplate() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className='text-center py-12 px-4'>
+            className='text-center py-8 px-4 mt-6'>
+            <h1
+              className={`text-xl md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
+              The Wedding Of
+            </h1>
             <h2
-              className={`text-3xl md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
+              className={`text-2xl md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
               Vidi & Riffany
             </h2>
             <p className='text-sm md:text-base max-w-md mx-auto text-gray-700'>
@@ -230,84 +316,73 @@ export default function GoldTemplate() {
               <br />
               Gedung Serbaguna – Jakarta Selatan
             </p>
+
+            {/* quick actions */}
+            <div className='mt-4 flex gap-3 justify-center'>
+              <button
+                onClick={shareWA}
+                className={`px-4 py-2 rounded-full text-white shadow ${T.cta} flex items-center gap-2`}>
+                <Share2 size={16} /> Share
+              </button>
+              <button
+                onClick={copyLink}
+                className='px-4 py-2 rounded-full border bg-white hover:bg-gray-50 flex items-center gap-2'>
+                <Copy size={14} /> Salin Link
+              </button>
+            </div>
           </motion.section>
 
-          {/* Lokasi */}
+          {/* Countdown */}
+          <div className='px-4'>
+            <CountdownSection date='2025-11-25T08:00:00' />
+          </div>
+
+          {/* Profile Mempelai */}
           <motion.section
             initial={{ opacity: 0, y: 35 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className='text-center py-8 px-4'>
-            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Lokasi Acara
-            </h3>
-            <div
-              className={`rounded-2xl overflow-hidden shadow-xl border ${T.border} max-w-3xl mx-auto`}>
-              {/* Ganti src embed sesuai alamat acara kamu */}
-              <iframe
-                src='https://www.google.com/maps?q=-6.244669,106.800483&z=15&output=embed'
-                width='100%'
-                height='300'
-                className='border-0'
-                loading='lazy'
-              />
-            </div>
-          </motion.section>
-
-          {/* Photo Slider (8) */}
-          <motion.section
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className='py-10 px-4 md:px-6'>
+            className='py-10 px-4'>
             <h3
-              className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
-              Momen Kebersamaan
+              className={`font-bold text-lg md:text-xl mb-6 text-center ${T.textMain}`}>
+              Profil Mempelai
             </h3>
-            <div className='flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2'>
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: i * 0.05 }}
-                  className='snap-center shrink-0'>
-                  <Image
-                    src={`/images/slider/${i + 1}.jpg`}
-                    width={280}
-                    height={360}
-                    alt={`Slider ${i + 1}`}
-                    className='rounded-xl shadow-lg object-cover w-[220px] h-[280px] md:w-[260px] md:h-[340px]'
-                  />
-                </motion.div>
-              ))}
+
+            <div className='max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6 items-center'>
+              <div
+                className={`p-6 rounded-2xl border ${T.border} ${T.card} shadow`}>
+                <Image
+                  src='/images/groom.jpg'
+                  alt='Groom'
+                  width={500}
+                  height={500}
+                  className='rounded-xl w-full h-56 object-cover mb-4'
+                />
+                <h4 className='font-semibold text-lg'>Vidi</h4>
+                <p className='text-sm text-gray-700'>
+                  Putra kedua dari Bapak X dan Ibu Y.
+                </p>
+              </div>
+
+              <div
+                className={`p-6 rounded-2xl border ${T.border} ${T.card} shadow`}>
+                <Image
+                  src='/images/bride.jpg'
+                  alt='Bride'
+                  width={500}
+                  height={500}
+                  className='rounded-xl w-full h-56 object-cover mb-4'
+                />
+                <h4 className='font-semibold text-lg'>Riffany</h4>
+                <p className='text-sm text-gray-700'>
+                  Putri ketiga dari Bapak A dan Ibu B.
+                </p>
+              </div>
             </div>
           </motion.section>
 
-          {/* Video */}
-          <motion.section
-            initial={{ opacity: 0, scale: 0.98 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7 }}
-            className='py-10 text-center px-4'>
-            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Video Kami
-            </h3>
-            <div
-              className={`max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl border ${T.border}`}>
-              <video
-                src='/videos/love-story.mp4'
-                controls
-                className='w-full h-auto'
-              />
-            </div>
-          </motion.section>
-
-          {/* Story Instagram */}
+          {/* Love Story Timeline */}
           <motion.section
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -315,56 +390,118 @@ export default function GoldTemplate() {
             transition={{ duration: 0.7 }}
             className='py-10 px-4'>
             <h3
-              className={`text-center font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Story Instagram
+              className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
+              Our Love Story
             </h3>
-            <div className='flex gap-4 overflow-x-auto snap-x'>
-              {[...Array(4)].map((_, i) => (
-                <div
-                  key={i}
-                  className='snap-center shrink-0'>
-                  <Image
-                    src={`/images/story/${i + 1}.jpg`}
-                    width={220}
-                    height={380}
-                    alt={`Story ${i + 1}`}
-                    className={`rounded-2xl border ${T.border} object-cover w-[180px] h-[320px] md:w-[210px] md:h-[360px] shadow-lg`}
-                  />
-                </div>
+            <div className='max-w-3xl mx-auto space-y-6'>
+              {[
+                {
+                  title: "Kenalan",
+                  when: "2018",
+                  text: "Ketemu di kafe dekat kampus.",
+                },
+                {
+                  title: "Jadian",
+                  when: "2019",
+                  text: "Mulai pacaran setelah beberapa bulan PDKT.",
+                },
+                {
+                  title: "Lamaran",
+                  when: "2024",
+                  text: "Lamaran sederhana di rumah keluarga.",
+                },
+                {
+                  title: "Menikah",
+                  when: "2025",
+                  text: "Akhirnya resmi mengikat janji.",
+                  highlight: true,
+                },
+              ].map((it, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: idx * 0.06 }}
+                  className={`p-4 rounded-xl border ${T.border} ${T.card} shadow`}>
+                  <div className='flex justify-between items-center'>
+                    <div>
+                      <h4 className='font-semibold'>{it.title}</h4>
+                      <p className='text-xs text-gray-500'>{it.when}</p>
+                    </div>
+                    {it.highlight && (
+                      <Heart
+                        size={20}
+                        className='text-red-500'
+                      />
+                    )}
+                  </div>
+                  <p className='mt-2 text-sm text-gray-700'>{it.text}</p>
+                </motion.div>
               ))}
             </div>
           </motion.section>
 
-          {/* Gallery (16) */}
+          {/* Detail Acara (Akad & Resepsi) */}
           <motion.section
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className='py-10 px-4 md:px-6'>
+            className='py-10 px-4'>
             <h3
               className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
-              Galeri Foto
+              Detail Acara
             </h3>
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto'>
-              {[...Array(16)].map((_, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 0.96 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.4, delay: (i % 4) * 0.05 }}
-                  className={`rounded-xl overflow-hidden border ${T.border} bg-white shadow`}>
-                  <Image
-                    src={`/images/galeri/${i + 1}.jpg`}
-                    width={500}
-                    height={500}
-                    alt={`Galeri ${i + 1}`}
-                    className='object-cover w-full h-40 sm:h-44 md:h-48'
-                  />
-                </motion.div>
-              ))}
+            <div className='max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div
+                className={`p-6 rounded-2xl border ${T.border} ${T.card} shadow`}>
+                <h4 className='font-semibold flex items-center gap-2'>
+                  <Calendar size={18} /> Akad
+                </h4>
+                <p className='text-sm text-gray-700 mt-2'>
+                  Sabtu, 25 November 2025 — 08:00 WIB
+                </p>
+                <p className='text-sm text-gray-700 mt-1 flex items-center gap-2'>
+                  <MapPin size={14} /> Masjid Al-Falah, Jakarta Selatan
+                </p>
+                <p className='text-sm text-gray-700 mt-2'>
+                  Dress Code: Kemeja / Baju Melayu (warna: pastel)
+                </p>
+              </div>
+
+              <div
+                className={`p-6 rounded-2xl border ${T.border} ${T.card} shadow`}>
+                <h4 className='font-semibold flex items-center gap-2'>
+                  <Calendar size={18} /> Resepsi
+                </h4>
+                <p className='text-sm text-gray-700 mt-2'>
+                  Sabtu, 25 November 2025 — 11:00 — 14:00 WIB
+                </p>
+                <p className='text-sm text-gray-700 mt-1 flex items-center gap-2'>
+                  <MapPin size={14} /> Gedung Serbaguna — Jakarta Selatan
+                </p>
+                <p className='text-sm text-gray-700 mt-2'>
+                  Parkir tersedia di basement gedung.
+                </p>
+              </div>
             </div>
+          </motion.section>
+
+          {/* Dress Code & Info Tambahan */}
+          <motion.section
+            initial={{ opacity: 0, y: 25 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className='text-center py-8 px-4'>
+            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
+              Dress Code & Info
+            </h3>
+            <p className='max-w-2xl mx-auto text-sm text-gray-700'>
+              Dress code: Elegant Casual (warna pastel) — Mohon datang tepat
+              waktu. Jika membawa anak, pastikan diawasi.
+            </p>
           </motion.section>
 
           {/* Link Streaming */}
@@ -386,35 +523,72 @@ export default function GoldTemplate() {
             </a>
           </motion.section>
 
-          {/* Amplop Digital */}
+          {/* Wishlist / Gift Registry */}
           <motion.section
-            initial={{ opacity: 0, y: 25 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className='text-center py-10 px-4'>
-            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Amplop Digital
+            className='py-10 px-4'>
+            <h3
+              className={`text-center font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
+              Amplop & Gift Registry
             </h3>
-            <div
-              className={`max-w-xl mx-auto p-6 rounded-2xl shadow-xl border ${T.border} ${T.card}`}>
+            <div className='max-w-xl mx-auto p-6 rounded-2xl shadow-xl border ${T.border} ${T.card}'>
               <p className='text-sm text-gray-700 mb-4'>
-                Dengan segala hormat, jika berkenan memberikan hadiah, Anda
-                dapat mengirimkan melalui e-wallet.
+                Jika berkenan, kirim amplop digital atau cek list wishlist kami.
               </p>
-              <div className='flex flex-col sm:flex-row gap-3 justify-center'>
+              <div className='flex gap-3 justify-center'>
                 <button
                   className={`px-5 py-2 rounded-full text-white ${T.cta}`}>
                   Kirim via E-Wallet
                 </button>
-                <button className='px-5 py-2 rounded-full border bg-white hover:bg-gray-50'>
-                  Salin No. Rekening
+                <button className='px-5 py-2 rounded-full border bg-white hover:bg-gray-50 flex items-center gap-2'>
+                  <Gift size={16} /> Buka Wishlist
                 </button>
               </div>
             </div>
           </motion.section>
 
-          {/* Ucapan & Doa */}
+          {/* QR + Map Embed + Gallery small */}
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className='py-10 px-4'>
+            <div className='max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4'>
+              <div
+                className={`p-4 rounded-2xl border ${T.border} ${T.card} shadow text-center`}>
+                <h4 className='font-semibold mb-2'>
+                  Scan QR untuk buka undangan
+                </h4>
+                {/* simple QR */}
+                <img
+                  src={qrSrc}
+                  alt='qr'
+                  className='mx-auto w-40 h-40 object-contain rounded-md'
+                />
+                <p className='text-xs text-gray-500 mt-2'>
+                  Scan untuk akses cepat dari HP
+                </p>
+              </div>
+
+              <div
+                className={`p-4 rounded-2xl border ${T.border} ${T.card} shadow col-span-2`}>
+                <h4 className='font-semibold mb-2'>Peta Lokasi</h4>
+                <iframe
+                  src='https://www.google.com/maps?q=-6.244669,106.800483&z=15&output=embed'
+                  width='100%'
+                  height='200'
+                  className='border-0 rounded-md'
+                  loading='lazy'
+                />
+              </div>
+            </div>
+          </motion.section>
+
+          {/* Ucapan & Doa + Guest Book form */}
           <motion.section
             initial={{ opacity: 0, y: 25 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -425,16 +599,55 @@ export default function GoldTemplate() {
               className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
               Ucapan & Doa
             </h3>
-            <div className='space-y-4 max-w-2xl mx-auto'>
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`p-4 rounded-2xl shadow border ${T.border} bg-white`}>
-                  <p className='font-semibold'>{msg.name}</p>
-                  <p className='text-xs text-gray-500 mb-2'>{msg.time}</p>
-                  <p className='text-gray-800'>{msg.message}</p>
-                </div>
-              ))}
+            <div className='max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-6'>
+              <div className='space-y-4'>
+                {messages.map((msg, i) => (
+                  <motion.div
+                    key={i}
+                    initial={{ opacity: 0, y: 6 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.3 }}
+                    className={`p-4 rounded-2xl shadow border ${T.border} bg-white`}>
+                    <p className='font-semibold'>{msg.name}</p>
+                    <p className='text-xs text-gray-500 mb-2'>{msg.time}</p>
+                    <p className='text-gray-800'>{msg.message}</p>
+                  </motion.div>
+                ))}
+              </div>
+
+              <div
+                className={`p-6 rounded-2xl border ${T.border} ${T.card} shadow`}>
+                <h4 className='font-semibold mb-2'>Tulis Ucapanmu</h4>
+                <form
+                  onSubmit={addGuestMessage}
+                  className='flex flex-col gap-3'>
+                  <input
+                    type='text'
+                    value={guestForm.name}
+                    onChange={(e) =>
+                      setGuestForm((s) => ({ ...s, name: e.target.value }))
+                    }
+                    placeholder='Nama'
+                    className='p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white'
+                    required
+                  />
+                  <textarea
+                    value={guestForm.message}
+                    onChange={(e) =>
+                      setGuestForm((s) => ({ ...s, message: e.target.value }))
+                    }
+                    placeholder='Ucapan & doa'
+                    className='p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-yellow-400 bg-white h-28'
+                    required
+                  />
+                  <button
+                    type='submit'
+                    className={`mt-1 py-3 rounded-full text-white shadow ${T.cta}`}>
+                    Kirim Ucapan
+                  </button>
+                </form>
+              </div>
             </div>
           </motion.section>
 
@@ -479,6 +692,22 @@ export default function GoldTemplate() {
               </button>
             </form>
           </motion.section>
+
+          {/* Footer */}
+          <motion.footer
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className='text-center py-8 px-4'>
+            <p className='text-sm text-gray-600'>
+              Merupakan suatu kehormatan & kebahagiaan bagi kami apabila
+              Bapak/Ibu/Saudara/i berkenan hadir.
+            </p>
+            <p className='text-xs text-gray-500 mt-2'>
+              Terima kasih — Vidi & Riffany
+            </p>
+          </motion.footer>
         </div>
       )}
     </main>
