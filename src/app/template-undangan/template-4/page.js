@@ -705,7 +705,7 @@ export default function GoldTemplate() {
               Bapak/Ibu/Saudara/i berkenan hadir.
             </p>
             <p className='text-xs text-gray-500 mt-2'>
-              Terima kasih — Vidi & Riffany
+              Terima kasih — Vidi & Tijani
             </p>
           </motion.footer>
         </div>
