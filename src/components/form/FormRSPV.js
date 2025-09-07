@@ -126,6 +126,19 @@ export default function UcapanRSVP({ T, background }) {
         </div>
       </div>
 
+      {/* Statistik Kehadiran */}
+      <div className='max-w-md mx-auto mt-8 grid grid-cols-2 gap-4 mb-8'>
+        <div className='p-6 rounded-2xl shadow bg-slate-50 text-center'>
+          <p className='text-lg font-bold text-green-700'>{hadirCount}</p>
+          <p className='text-sm text-green-600'>Hadir</p>
+        </div>
+        <div
+          className={`p-6 rounded-2xl shadow ${background[T].chip} text-center`}>
+          <p className='text-lg font-bold text-rose-400'>{tidakHadirCount}</p>
+          <p className='text-sm text-red-600'>Tidak Hadir</p>
+        </div>
+      </div>
+
       <div className='max-w-2xl mx-auto'>
         {/* Ucapan Card */}
         <div
@@ -175,19 +188,6 @@ export default function UcapanRSVP({ T, background }) {
               ))}
             </div>
           )}
-        </div>
-      </div>
-
-      {/* Statistik Kehadiran */}
-      <div className='max-w-md mx-auto mt-8 grid grid-cols-2 gap-4'>
-        <div className='p-6 rounded-2xl shadow bg-slate-50 text-center'>
-          <p className='text-lg font-bold text-green-700'>{hadirCount}</p>
-          <p className='text-sm text-green-600'>Hadir</p>
-        </div>
-        <div
-          className={`p-6 rounded-2xl shadow ${background[T].chip} text-center`}>
-          <p className='text-lg font-bold text-rose-400'>{tidakHadirCount}</p>
-          <p className='text-sm text-red-600'>Tidak Hadir</p>
         </div>
       </div>
     </motion.section>
