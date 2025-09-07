@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { PlayCircle, PauseCircle } from "lucide-react";
+import { PlayCircle, PauseCircle, Heart } from "lucide-react";
 import Countdown2 from "@/components/counter/CounteDown2";
 import LoveStory from "@/components/LoveStory";
 import ProfilMempelai from "@/components/ProfilePerson";
@@ -511,17 +511,35 @@ export default function GoldTemplate() {
 
           {/* Footer */}
           <motion.footer
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className='text-center py-8 px-4'>
-            <p className='text-sm text-gray-600'>
-              Merupakan suatu kehormatan & kebahagiaan bagi kami apabila
+            className='relative text-center py-10 px-6 mt-12 bg-gradient-to-t from-gray-50 to-white'>
+            {/* Divider line */}
+            <div
+              className={`absolute top-0 left-1/2 -translate-x-1/2 w-20 h-1 bg-gradient-to-r ${THEMES[theme].cta} rounded-full`}></div>
+
+            {/* Main text */}
+            <p className='text-base md:text-lg text-gray-700 leading-relaxed'>
+              Merupakan suatu kehormatan & kebahagiaan bagi kami apabila <br />
               Bapak/Ibu/Saudara/i berkenan hadir.
             </p>
-            <p className='text-xs text-gray-500 mt-2'>
-              Terima kasih — Vidi & Tijani
+
+            {/* Thanks note */}
+            <div className='mt-6 flex items-center justify-center gap-2 text-gray-600 text-sm'>
+              <span>Terima kasih</span>
+              <Heart
+                size={16}
+                className='text-pink-500 animate-pulse'
+                fill='currentColor'
+              />
+              <span>Vidi & Tijani</span>
+            </div>
+
+            {/* Small copyright */}
+            <p className='mt-4 text-xs text-gray-400'>
+              © {new Date().getFullYear()} Vidi & Tijani Wedding
             </p>
           </motion.footer>
         </div>
