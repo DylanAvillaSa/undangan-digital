@@ -209,7 +209,6 @@ export default function GoldTemplate() {
       />
 
       {/* Floating controls: audio, theme, dark */}
-      {/* ===== Musik Toggle (kanan bawah) ===== */}
       <div className='fixed z-50 bottom-4 right-4'>
         <motion.button
           whileHover={{ scale: 1.1, rotate: 5 }}

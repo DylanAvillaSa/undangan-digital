@@ -76,10 +76,10 @@ export default function UcapanRSVP({ T, background }) {
         Ucapan, Doa & Konfirmasi Kehadiran
       </h3>
 
-      <div className='max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8'>
+      <div className='max-w-lg mx-auto'>
         {/* Form Card */}
         <div
-          className={`p-6 rounded-2xl border ${background[T].border} ${background[T].card} shadow col-span-1`}>
+          className={`p-6 rounded-2xl border ${background[T].border} ${background[T].card} shadow mb-8`}>
           <h4 className='font-semibold mb-4 text-center'>
             Tulis Ucapan & Konfirmasi Kehadiran
           </h4>
@@ -124,10 +124,12 @@ export default function UcapanRSVP({ T, background }) {
             </button>
           </form>
         </div>
+      </div>
 
+      <div className='max-w-2xl mx-auto'>
         {/* Ucapan Card */}
         <div
-          className={`p-6 rounded-2xl border ${background[T].border} ${background[T].card} shadow col-span-2`}>
+          className={`p-6 rounded-2xl border ${background[T].border} ${background[T].card} shadow`}>
           <h4 className='font-semibold mb-4 text-center'>Ucapan & Doa</h4>
           <div className='space-y-4'>
             {displayed.map((msg, i) => (
@@ -177,8 +179,8 @@ export default function UcapanRSVP({ T, background }) {
       </div>
 
       {/* Statistik Kehadiran */}
-      <div className='max-w-5xl mx-auto mt-8 grid grid-cols-2 gap-4'>
-        <div className={`p-6 rounded-2xl shadow bg-slate-50 text-center`}>
+      <div className='max-w-md mx-auto mt-8 grid grid-cols-2 gap-4'>
+        <div className='p-6 rounded-2xl shadow bg-slate-50 text-center'>
           <p className='text-lg font-bold text-green-700'>{hadirCount}</p>
           <p className='text-sm text-green-600'>Hadir</p>
         </div>

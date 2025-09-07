@@ -41,14 +41,14 @@ export default function AmplopGift({ T, background }) {
       </h3>
 
       <div
-        className={`max-w-2xl mx-auto p-8 rounded-3xl shadow-xl border ${background[T].border} ${background[T].card}`}>
-        <p className='text-sm text-gray-700 mb-8 text-center leading-relaxed'>
+        className={`max-w-3xl mx-auto p-8 rounded-3xl shadow-xl border ${background[T].border} ${background[T].card}`}>
+        <p className='text-sm md:text-base text-gray-700 mb-10 text-center leading-relaxed'>
           Dengan penuh sukacita, kami menerima tanda kasih melalui amplop
           digital atau pilihan hadiah dari wishlist kami.
         </p>
 
         {/* Rekening Cards */}
-        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-10'>
+        <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mb-12'>
           {accounts.map((acc, idx) => (
             <motion.div
               key={idx}
@@ -61,11 +61,11 @@ export default function AmplopGift({ T, background }) {
               </div>
 
               {/* Rekening number */}
-              <div className='text-lg md:text-xl font-mono tracking-widest mb-6'>
+              <div className='text-lg md:text-xl font-mono tracking-widest mb-6 break-words'>
                 {acc.number}
               </div>
 
-              {/* Owner */}
+              {/* Owner + Copy */}
               <div className='flex items-center justify-between'>
                 <h4 className='font-semibold text-sm'>{acc.owner}</h4>
                 <button
