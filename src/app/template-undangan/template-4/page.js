@@ -209,15 +209,15 @@ export default function GoldTemplate() {
       />
 
       {/* Floating controls: audio, theme, dark */}
-      <div className='fixed z-50 bottom-4 right-4 flex flex-col gap-3 items-end'>
-        {/* ===== Musik Toggle ===== */}
+      {/* ===== Musik Toggle (kanan bawah) ===== */}
+      <div className='fixed z-50 bottom-4 right-4'>
         <motion.button
           whileHover={{ scale: 1.1, rotate: 5 }}
           whileTap={{ scale: 0.9 }}
           onClick={toggleAudio}
           className={`p-3 rounded-full shadow-lg ${
             T.cta
-          } text-white flex items-center justify-center absolute bottom-0 group ${
+          } text-white flex items-center justify-center group ${
             isPlaying && "opacity-35"
           }`}
           aria-label='Toggle Music'>
@@ -227,13 +227,15 @@ export default function GoldTemplate() {
             {isPlaying ? "Pause Music" : "Play Music"}
           </span>
         </motion.button>
+      </div>
 
-        {/* ===== Switcher ===== */}
+      {/* ===== Switcher (tengah bawah) ===== */}
+      <div className='fixed z-50 bottom-4 left-1/2 -translate-x-1/2'>
         <div
           className={`p-3 rounded-full shadow-lg text-xs ${T.cta} 
-             text-white flex items-center justify-center relative  -left-[9rem] ${
-               switcher ? "hidden" : "opacity-35"
-             } group`}
+      text-white flex items-center justify-center ${
+        switcher ? "hidden" : "opacity-35"
+      } group`}
           onClick={() => setSwitcher(!switcher)}>
           Theme
         </div>
