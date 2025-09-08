@@ -29,7 +29,7 @@ const templates = [
   },
   {
     id: 4,
-    image: "/template/template-4.png",
+    image: "/template/template-4-rev.png",
     name: "Template 01",
     paket: "Gold",
     link: "/template-undangan/template-4",

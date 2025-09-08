@@ -317,7 +317,7 @@ export default function GoldTemplate() {
             <div
               className={`relative w-44 h-44 mx-auto mb-6 rounded-full border-4 ${THEMES[theme].border} shadow-2xl overflow-hidden`}>
               <Image
-                src='/images/tmp.jpg'
+                src='/images/anime-wedding.jpg'
                 alt='Pasangan'
                 fill
                 className='object-cover'
@@ -360,11 +360,11 @@ export default function GoldTemplate() {
           {/* introduction section */}
           <div className='w-full flex justify-center rounded-b-lg'>
             <Image
-              src='/images/tmp.jpg'
+              src='/images/anime-wedding.jpg'
               width={1920}
               height={1080}
               alt='Pasangan'
-              className='object-cover h-[395px] rounded-md'
+              className='object-cover h-[395px] opacity-65 rounded-md'
             />
           </div>
 
