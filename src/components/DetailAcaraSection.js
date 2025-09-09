@@ -29,7 +29,25 @@ export default function DetailAcara({ T, background }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8 }}
-      className='py-16 px-6 bg-white'>
+      className='py-16 px-6 bg-white relative'>
+      {/* Ornament Kiri */}
+      <motion.div
+        animate={{
+          y: [0, -15, 0],
+          rotate: [0, -2, 2, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className='absolute -top-42 left-0 w-full md:w-48 opacity-40'>
+        <img
+          src='/asset/ornament-full.png'
+          alt='ornament kiri'
+          className='w-full'
+        />
+      </motion.div>
       <h3
         className={`text-center font-[--playfair] text-3xl md:text-4xl mb-12 ${background[T].textMain}`}>
         Detail Acara

@@ -358,14 +358,54 @@ export default function GoldTemplate() {
       {opened && (
         <div className='relative z-10 pb-24'>
           {/* introduction section */}
-          <div className='w-full flex justify-center rounded-b-lg'>
+          <div className=' w-full flex justify-center rounded-b-lg overflow-hidden'>
+            {/* Gambar Utama */}
             <Image
               src='/images/anime-wedding.jpg'
               width={1920}
               height={1080}
               alt='Pasangan'
-              className='object-cover h-[395px] opacity-65 rounded-md'
+              className='object-cover h-[395px] w-full opacity-70 rounded-md'
             />
+
+            {/* Ornament Kiri */}
+            <motion.div
+              animate={{
+                y: [0, -15, 0],
+                rotate: [0, -2, 2, 0],
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className='absolute top-5 left-0 w-20 md:w-48 opacity-90'>
+              <img
+                src='/asset/florar.png'
+                alt='ornament kiri'
+                className='w-full'
+              />
+            </motion.div>
+
+            {/* Ornament Kanan */}
+            <motion.div
+              animate={{
+                y: [0, -15, 0],
+                rotate: [0, 2, -2, 0],
+              }}
+              transition={{
+                duration: 10,
+                repeat: Infinity,
+                ease: "easeInOut",
+                delay: 1, // biar ga sinkron sama kiri → keliatan natural
+              }}
+              className='absolute bottom-0 right-0 w-20 md:w-48 opacity-90'>
+              <img
+                src='/asset/florar.png'
+                alt='ornament kanan'
+                className='w-full'
+              />
+            </motion.div>
           </div>
 
           {/* Nama & Detail */}
@@ -374,21 +414,42 @@ export default function GoldTemplate() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className='text-center py-8 px-4 mt-2'>
+            className='relative text-center py-24 px-4 mt-2 overflow-hidden'>
+            {/* Ornament Atas */}
+            <motion.div
+              animate={{
+                y: [0, -15, 0],
+                rotate: [0, 2, -2, 0],
+              }}
+              transition={{
+                duration: 12,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              className='absolute -top-12 left-1/2 -translate-x-1/2 w-72 md:w-96 opacity-55 z-10 pointer-events-none'>
+              <img
+                src='/asset/ornament-atas.png'
+                alt='ornament atas'
+                className='w-full'
+              />
+            </motion.div>
+
+            {/* TEXT */}
             <motion.h1
               initial={{ opacity: 0, y: -30 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut" }}
               viewport={{ once: true, amount: 0.6 }}
-              className={`font-[var(--font-vibes)] text-xl md:text-4xl mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
+              className={`relative z-20 font-[var(--font-vibes)] text-xl md:text-4xl mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
               The Wedding Of
             </motion.h1>
+
             <motion.div
               initial={{ opacity: 0, scale: 0.8 }}
               whileInView={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
               viewport={{ once: true, amount: 0.6 }}
-              className={`text-4xl flex justify-center gap-2 md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
+              className={`relative z-20 text-4xl flex justify-center gap-2 md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
               Vidi & <p className='pt-3'>Riffany</p>
             </motion.div>
 
@@ -396,7 +457,7 @@ export default function GoldTemplate() {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleSaveDate}
-              className={`${THEMES[theme].cta} rounded-xl px-4 py-2 w-[150px] flex justify-center items-center mx-auto mb-5 mt-5 text-sm text-white cursor-pointer shadow-lg`}>
+              className={`${THEMES[theme].cta} relative z-20 rounded-xl px-4 py-2 w-[150px] flex justify-center items-center mx-auto mb-5 mt-5 text-sm text-white cursor-pointer shadow-lg`}>
               <p>Save The Date</p>
             </motion.div>
 
@@ -405,7 +466,7 @@ export default function GoldTemplate() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
               viewport={{ once: true, amount: 0.6 }}
-              className='font-[var(--font-playfair)] text-sm md:text-base max-w-md mx-auto text-gray-700'>
+              className='relative z-20 font-[var(--font-playfair)] text-sm md:text-base max-w-md mx-auto text-gray-700'>
               Sabtu, 25 November 2025
               <br />
               Gedung Serbaguna – Jakarta Selatan
@@ -423,7 +484,7 @@ export default function GoldTemplate() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 0.8, ease: "easeOut" }}
-            className='py-10 px-4 mt-8'>
+            className='py-10 px-4 mt-8 relative'>
             <ProfilMempelai
               T={theme}
               background={THEMES}
@@ -436,7 +497,7 @@ export default function GoldTemplate() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className='py-10 px-4'>
+            className='py-10 px-4 relative'>
             <LoveStory
               T={theme}
               background={THEMES}

@@ -17,6 +17,44 @@ export default function ProfilMempelai({ T, background }) {
         <div className='absolute bottom-10 right-20 w-52 h-52 bg-amber-200/40 rounded-full blur-3xl animate-pulse'></div>
       </div>
 
+      {/* Ornament Kiri */}
+      <motion.div
+        animate={{
+          y: [0, -15, 0],
+          rotate: [0, -2, 2, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className='absolute top-0 left-0 w-20 md:w-48 opacity-90'>
+        <img
+          src='/asset/florar.png'
+          alt='ornament kiri'
+          className='w-full'
+        />
+      </motion.div>
+
+      {/* Ornament Kiri */}
+      <motion.div
+        animate={{
+          y: [0, -15, 0],
+          rotate: [0, -2, 2, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className='absolute bottom-0 right-0 w-20 md:w-48 opacity-90'>
+        <img
+          src='/asset/florar.png'
+          alt='ornament kiri'
+          className='w-full'
+        />
+      </motion.div>
+
       {/* Title */}
       <motion.h3
         initial={{ opacity: 0, scale: 0.9 }}

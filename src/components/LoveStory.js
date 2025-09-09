@@ -35,6 +35,43 @@ export default function LoveStory({ T, background }) {
       viewport={{ once: true }}
       transition={{ duration: 0.7 }}
       className={`py-14 px-6 bg-gradient-to-b ${background[T.card]}`}>
+      {/* Ornament Kiri */}
+      <motion.div
+        animate={{
+          y: [0, -15, 0],
+          rotate: [0, -2, 2, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className='absolute top-5 left-0 w-32 md:w-48 opacity-90'>
+        <img
+          src='/asset/ornament.png'
+          alt='ornament kiri'
+          className='w-full'
+        />
+      </motion.div>
+
+      {/* Ornament Kiri */}
+      <motion.div
+        animate={{
+          y: [0, -15, 0],
+          rotate: [0, -2, 2, 0],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+        className='absolute -bottom-10 right-1/2 translate-x-1/2 w-32 md:w-48 opacity-90'>
+        <img
+          src='/asset/ornament-1.png'
+          alt='ornament kiri'
+          className='w-full'
+        />
+      </motion.div>
       <h3
         className={`text-center font-bold text-2xl md:text-3xl mb-10 ${background[T].textMain}`}>
         Our Love Story
