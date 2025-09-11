@@ -34,11 +34,11 @@ const poppins = Poppins({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang='en'>
+    <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <Navbar />
         <SmoothScroll>
-          <div className='font-container'>{children}</div>
+          <div className="font-container">{children}</div>
         </SmoothScroll>
       </body>
     </html>

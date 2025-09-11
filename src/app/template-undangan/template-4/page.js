@@ -11,6 +11,7 @@ import AmplopGift from "@/components/GiftSection";
 import UcapanRSVP from "@/components/form/FormRSPV";
 import GallerySection from "@/components/GallerySection";
 import DetailAcara from "@/components/DetailAcaraSection";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 // ===== Dummy Messages (Ucapan & Doa) =====
 const initialMessages = [
@@ -198,18 +199,19 @@ export default function GoldTemplate() {
   return (
     <main
       className={`min-h-screen ${T.pageBg} relative overflow-hidden`}
-      style={{ fontFamily: "'Playfair Display', serif" }}>
+      style={{ fontFamily: "'Playfair Display', serif" }}
+    >
       {/* ===== Musik Latar + Controller ===== */}
       <audio
         ref={audioRef}
         autoPlay
         loop
-        src='/bg-wedding.mp3'
-        className='hidden'
+        src="/bg-wedding.mp3"
+        className="hidden"
       />
 
       {/* Floating controls: audio, theme, dark */}
-      <div className='fixed z-50 bottom-4 right-4'>
+      <div className="fixed z-50 bottom-4 right-4">
         <motion.button
           whileHover={{ scale: 1.1, rotate: 5 }}
           whileTap={{ scale: 0.9 }}
@@ -219,23 +221,25 @@ export default function GoldTemplate() {
           } text-white flex items-center justify-center group ${
             isPlaying && "opacity-35"
           }`}
-          aria-label='Toggle Music'>
+          aria-label="Toggle Music"
+        >
           {isPlaying ? <PauseCircle size={22} /> : <PlayCircle size={22} />}
           {/* Tooltip */}
-          <span className='absolute right-full mr-2 px-2 py-1 text-xs bg-black/80 text-white rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap'>
+          <span className="absolute right-full mr-2 px-2 py-1 text-xs bg-black/80 text-white rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
             {isPlaying ? "Pause Music" : "Play Music"}
           </span>
         </motion.button>
       </div>
 
       {/* ===== Switcher (tengah bawah) ===== */}
-      <div className='fixed z-50 bottom-4 left-1/2 -translate-x-1/2'>
+      <div className="fixed z-50 bottom-4 left-1/2 -translate-x-1/2">
         <div
           className={`p-3 rounded-full shadow-lg text-xs ${T.cta} 
       text-white flex items-center justify-center ${
         switcher ? "hidden" : "opacity-35"
       } group`}
-          onClick={() => setSwitcher(!switcher)}>
+          onClick={() => setSwitcher(!switcher)}
+        >
           Theme
         </div>
       </div>
@@ -243,12 +247,13 @@ export default function GoldTemplate() {
       <AnimatePresence>
         {switcher && (
           <motion.div
-            key='theme-switcher'
+            key="theme-switcher"
             variants={containerVariants}
-            initial='hidden'
-            animate='visible'
-            exit='exit'
-            className='flex gap-2 items-end fixed bottom-5 left-1/2 -translate-x-1/2 z-50'>
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="flex gap-2 items-end fixed bottom-5 left-1/2 -translate-x-1/2 z-50"
+          >
             {Object.entries(THEMES).map(([key, val]) => (
               <motion.button
                 key={key}
@@ -269,9 +274,10 @@ export default function GoldTemplate() {
                   // warna utama
                   border: `2px solid ${val.borderColor || "#fff"}`, // optional: border dari theme
                 }}
-                aria-label={`Tema ${val.name}`}>
+                aria-label={`Tema ${val.name}`}
+              >
                 {/* Tooltip */}
-                <span className='absolute -top-7 px-2 py-1 text-xs bg-black/80 text-white rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap'>
+                <span className="absolute -top-7 px-2 py-1 text-xs bg-black/80 text-white rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
                   {val.name}
                 </span>
               </motion.button>
@@ -286,55 +292,60 @@ export default function GoldTemplate() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
-          className='relative min-h-screen flex items-center justify-center overflow-hidden'>
+          className="relative min-h-screen flex items-center justify-center overflow-hidden"
+        >
           {/* Background Image + Overlay */}
-          <div className='absolute inset-0'>
+          <div className="absolute inset-0">
             <Image
-              src='/images/wedding.jpeg' // ganti dengan gambar elegan lo
-              alt='Background Wedding'
+              src="/images/wedding.jpeg" // ganti dengan gambar elegan lo
+              alt="Background Wedding"
               fill
-              className='object-cover w-full min-h-screen'
+              className="object-cover w-full min-h-screen"
               priority
             />
-            <div className='absolute inset-0 bg-black/50 backdrop-blur-[2px]'></div>
+            <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]"></div>
           </div>
 
           {/* Floating Ornaments */}
-          <div className='absolute top-10 left-10 w-32 h-32 bg-pink-200/30 rounded-full blur-3xl animate-pulse'></div>
-          <div className='absolute bottom-16 right-16 w-40 h-40 bg-yellow-200/30 rounded-full blur-3xl animate-pulse'></div>
+          <div className="absolute top-10 left-10 w-32 h-32 bg-pink-200/30 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-16 right-16 w-40 h-40 bg-yellow-200/30 rounded-full blur-3xl animate-pulse"></div>
 
           {/* Content */}
           <motion.div
             initial={{ y: 40, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ delay: 0.3, duration: 1 }}
-            className='relative z-10 text-center max-w-lg w-full px-6'>
-            <p className='mb-3 text-sm text-gray-200 tracking-wide uppercase'>
+            className="relative z-10 text-center max-w-lg w-full px-6"
+          >
+            <p className="mb-3 text-sm text-gray-200 tracking-wide uppercase">
               We Invite You To
             </p>
 
             {/* Foto pasangan */}
             <div
-              className={`relative w-44 h-44 mx-auto mb-6 rounded-full border-4 ${THEMES[theme].border} shadow-2xl overflow-hidden`}>
+              className={`relative w-44 h-44 mx-auto mb-6 rounded-full border-4 ${THEMES[theme].border} shadow-2xl overflow-hidden`}
+            >
               <Image
-                src='/images/anime-wedding.jpg'
-                alt='Pasangan'
+                src="/images/anime-wedding.jpg"
+                alt="Pasangan"
                 fill
-                className='object-cover'
+                className="object-cover"
               />
               {/* Glow Effect */}
               <div
-                className={`absolute inset-0 rounded-full border-2 ${THEMES[theme].border} animate-pulse`}></div>
+                className={`absolute inset-0 rounded-full border-2 ${THEMES[theme].border} animate-pulse`}
+              ></div>
             </div>
 
             {/* Nama */}
             <h1
-              className={`font-[--greatVibes] text-5xl md:text-6xl mb-3 text-transparent bg-clip-text ${THEMES[theme].card}`}>
+              className={`font-[--greatVibes] text-5xl md:text-6xl mb-3 text-transparent bg-clip-text ${THEMES[theme].card}`}
+            >
               Vidi & Riffany
             </h1>
 
             {/* Deskripsi */}
-            <p className='mt-2 text-base text-gray-100 leading-relaxed'>
+            <p className="mt-2 text-base text-gray-100 leading-relaxed">
               Dengan penuh rasa syukur, kami mengundang Anda
               <br />
               untuk hadir di acara pernikahan kami.
@@ -345,10 +356,12 @@ export default function GoldTemplate() {
               whileHover={{ scale: 1.08 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleOpen}
-              className='mt-8 relative inline-block px-8 py-3 rounded-full font-semibold text-white shadow-lg overflow-hidden'>
+              className="mt-8 relative inline-block px-8 py-3 rounded-full font-semibold text-white shadow-lg overflow-hidden"
+            >
               <span
-                className={`absolute inset-0 bg-gradient-to-r ${THEMES[theme].cta} animate-gradient-x`}></span>
-              <span className='relative z-10'>Buka Undangan ✨</span>
+                className={`absolute inset-0 bg-gradient-to-r ${THEMES[theme].cta} animate-gradient-x`}
+              ></span>
+              <span className="relative z-10">Buka Undangan ✨</span>
             </motion.button>
           </motion.div>
         </motion.section>
@@ -356,140 +369,122 @@ export default function GoldTemplate() {
 
       {/* ===== UNDANGAN LENGKAP ===== */}
       {opened && (
-        <div className='relative z-10 pb-24'>
-          {/* introduction section */}
-          <div className=' w-full flex justify-center rounded-b-lg overflow-hidden'>
-            {/* Gambar Utama */}
-            <Image
-              src='/images/anime-wedding.jpg'
-              width={1920}
-              height={1080}
-              alt='Pasangan'
-              className='object-cover h-[395px] w-full opacity-70 rounded-md'
-            />
-
-            {/* Ornament Kiri */}
-            <motion.div
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, -2, 2, 0],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className='absolute top-5 left-0 w-20 md:w-48 opacity-90'>
-              <img
-                src='/asset/florar.png'
-                alt='ornament kiri'
-                className='w-full'
+        <div className="relative z-10 pb-24">
+          {/* Hero Section */}
+          <AnimateOnScroll>
+            {/* Background utama dengan style elegan */}
+            <div className="relative w-full h-[420px] overflow-hidden rounded-b-xl shadow-2xl">
+              <Image
+                src="/images/bg-wedding.jpg"
+                width={1920}
+                height={1080}
+                alt="Pasangan"
+                className="object-cover w-full h-full scale-105 transform"
+                priority
               />
-            </motion.div>
 
-            {/* Ornament Kanan */}
-            <motion.div
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, 2, -2, 0],
-              }}
-              transition={{
-                duration: 10,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: 1, // biar ga sinkron sama kiri → keliatan natural
-              }}
-              className='absolute bottom-0 right-0 w-20 md:w-48 opacity-90'>
-              <img
-                src='/asset/florar.png'
-                alt='ornament kanan'
-                className='w-full'
-              />
-            </motion.div>
-          </div>
+              {/* Overlay gradasi biar teks lebih jelas */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+
+              {/* Frame tipis gold (opsional) */}
+              <div
+                className={`absolute inset-0 rounded-b-xl border-b-4 ${THEMES[theme].border}  pointer-events-none`}
+              ></div>
+            </div>
+          </AnimateOnScroll>
 
           {/* Nama & Detail */}
-          <motion.section
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className='relative text-center py-24 px-4 mt-2 overflow-hidden'>
-            {/* Ornament Atas */}
-            <motion.div
-              animate={{
-                y: [0, -15, 0],
-                rotate: [0, 2, -2, 0],
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className='absolute -top-12 left-1/2 -translate-x-1/2 w-72 md:w-96 opacity-55 z-10 pointer-events-none'>
-              <img
-                src='/asset/ornament-atas.png'
-                alt='ornament atas'
-                className='w-full'
-              />
-            </motion.div>
-
-            {/* TEXT */}
-            <motion.h1
-              initial={{ opacity: 0, y: -30 }}
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              viewport={{ once: true, amount: 0.6 }}
-              className={`relative z-20 font-[var(--font-vibes)] text-xl md:text-4xl mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
-              The Wedding Of
-            </motion.h1>
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="relative text-center py-24 px-4 mt-2 overflow-hidden"
+            >
+              {/* Ornament Atas */}
+              <motion.div
+                animate={{
+                  y: [0, -15, 0],
+                  rotate: [0, 2, -2, 0],
+                }}
+                transition={{
+                  duration: 12,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+                className="absolute -top-12 left-1/2 -translate-x-1/2 w-72 md:w-96 opacity-55 z-10 pointer-events-none"
+              >
+                <img
+                  src="/asset/ornament-atas.png"
+                  alt="ornament atas"
+                  className="w-full"
+                />
+              </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-              viewport={{ once: true, amount: 0.6 }}
-              className={`relative z-20 text-4xl flex justify-center gap-2 md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
-              Vidi & <p className='pt-3'>Riffany</p>
-            </motion.div>
+              {/* TEXT */}
+              <motion.h1
+                initial={{ opacity: 0, y: -30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                viewport={{ once: true, amount: 0.6 }}
+                className={`relative z-20 font-[var(--font-vibes)] text-xl md:text-4xl mb-2 text-transparent bg-clip-text ${T.headerGrad}`}
+              >
+                The Wedding Of
+              </motion.h1>
 
-            <motion.div
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={handleSaveDate}
-              className={`${THEMES[theme].cta} relative z-20 rounded-xl px-4 py-2 w-[150px] flex justify-center items-center mx-auto mb-5 mt-5 text-sm text-white cursor-pointer shadow-lg`}>
-              <p>Save The Date</p>
-            </motion.div>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+                viewport={{ once: true, amount: 0.6 }}
+                className={`relative z-20 text-4xl flex justify-center gap-2 md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}
+              >
+                Vidi & <p className="pt-3">Riffany</p>
+              </motion.div>
 
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-              viewport={{ once: true, amount: 0.6 }}
-              className='relative z-20 font-[var(--font-playfair)] text-sm md:text-base max-w-md mx-auto text-gray-700'>
-              Sabtu, 25 November 2025
-              <br />
-              Gedung Serbaguna – Jakarta Selatan
-            </motion.p>
-          </motion.section>
+              <motion.div
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleSaveDate}
+                className={`${THEMES[theme].cta} relative z-20 rounded-xl px-4 py-2 w-[150px] flex justify-center items-center mx-auto mb-5 mt-5 text-sm text-white cursor-pointer shadow-lg`}
+              >
+                <p>Save The Date</p>
+              </motion.div>
+
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
+                viewport={{ once: true, amount: 0.6 }}
+                className="relative z-20 font-[var(--font-playfair)] text-sm md:text-base max-w-md mx-auto text-gray-700"
+              >
+                Sabtu, 25 November 2025
+                <br />
+                Gedung Serbaguna – Jakarta Selatan
+              </motion.p>
+            </motion.section>
+          </AnimateOnScroll>
 
           {/* Countdown */}
-          <div className='px-4'>
-            <Countdown2 date='2025-11-25T08:00:00' />
-          </div>
+          <AnimateOnScroll>
+            <div className="px-4">
+              <Countdown2 date="2025-11-25T08:00:00" />
+            </div>
+          </AnimateOnScroll>
 
           {/* Profile Mempelai */}
-          <motion.section
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-            className='py-10 px-4 mt-8 relative'>
-            <ProfilMempelai
-              T={theme}
-              background={THEMES}
-            />
-          </motion.section>
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="py-10 px-4 mt-8 relative"
+            >
+              <ProfilMempelai T={theme} background={THEMES} />
+            </motion.section>
+          </AnimateOnScroll>
 
           {/* Love Story Timeline */}
           <motion.section
@@ -497,112 +492,116 @@ export default function GoldTemplate() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className='py-10 px-4 relative'>
-            <LoveStory
-              T={theme}
-              background={THEMES}
-            />
+            className="py-10 px-4 relative"
+          >
+            <LoveStory T={theme} background={THEMES} />
           </motion.section>
 
           {/* Gallery */}
           <GallerySection />
 
           {/* Detail Acara (Akad & Resepsi) */}
-          <DetailAcara
-            T={theme}
-            background={THEMES}
-          />
+          <DetailAcara T={theme} background={THEMES} />
 
           {/* QR + Map Embed + Gallery small */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className='py-10 px-4'>
-            <div className='max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4'>
-              <div
-                className={`p-4 rounded-2xl border ${T.border} ${T.card} shadow col-span-2`}>
-                <h4 className='font-semibold mb-2'>Peta Lokasi</h4>
-                <iframe
-                  src='https://www.google.com/maps?q=-6.244669,106.800483&z=15&output=embed'
-                  width='100%'
-                  height='200'
-                  className='border-0 rounded-md'
-                  loading='lazy'
-                />
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="py-10 px-4"
+            >
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                  className={`p-4 rounded-2xl border ${T.border} ${T.card} shadow col-span-2`}
+                >
+                  <h4 className="font-semibold mb-2">Peta Lokasi</h4>
+                  <iframe
+                    src="https://www.google.com/maps?q=-6.244669,106.800483&z=15&output=embed"
+                    width="100%"
+                    height="200"
+                    className="border-0 rounded-md"
+                    loading="lazy"
+                  />
+                </div>
               </div>
-            </div>
-          </motion.section>
+            </motion.section>
+          </AnimateOnScroll>
 
           {/* Ucapan & Doa + Guest Book form */}
-          <UcapanRSVP
-            T={theme}
-            background={THEMES}
-          />
+          <UcapanRSVP T={theme} background={THEMES} />
 
           {/* Dress Code & Info Tambahan */}
-          <motion.section
-            initial={{ opacity: 0, y: 25 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className='text-center py-8 px-4'>
-            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Dress Code & Info
-            </h3>
-            <p className='max-w-2xl mx-auto text-sm text-gray-700'>
-              Dress code: Elegant Casual (warna pastel) — Mohon datang tepat
-              waktu. Jika membawa anak, pastikan diawasi.
-            </p>
-          </motion.section>
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center py-8 px-4"
+            >
+              <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
+                Dress Code & Info
+              </h3>
+              <p className="max-w-2xl mx-auto text-sm text-gray-700">
+                Dress code: Elegant Casual (warna pastel) — Mohon datang tepat
+                waktu. Jika membawa anak, pastikan diawasi.
+              </p>
+            </motion.section>
+          </AnimateOnScroll>
 
           {/* Wishlist / Gift Registry */}
-          <motion.section
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className='py-10 px-4'>
-            <AmplopGift
-              background={THEMES}
-              T={theme}
-            />
-          </motion.section>
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="py-10 px-4"
+            >
+              <AmplopGift background={THEMES} T={theme} />
+            </motion.section>
+          </AnimateOnScroll>
 
           {/* Footer */}
-          <motion.footer
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className='relative text-center py-10 px-6 mt-12 bg-gradient-to-t from-gray-50 to-white'>
-            {/* Divider line */}
-            <div
-              className={`absolute top-0 left-1/2 -translate-x-1/2 w-20 h-1 bg-gradient-to-r ${THEMES[theme].cta} rounded-full`}></div>
+          <AnimateOnScroll>
+            <motion.footer
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative text-center py-10 px-6 mt-12 bg-gradient-to-t from-gray-50 to-white"
+            >
+              {/* Divider line */}
+              <div
+                className={`absolute top-0 left-1/2 -translate-x-1/2 w-20 h-1 bg-gradient-to-r ${THEMES[theme].cta} rounded-full`}
+              ></div>
 
-            {/* Main text */}
-            <p className='text-base md:text-lg text-gray-700 leading-relaxed'>
-              Merupakan suatu kehormatan & kebahagiaan bagi kami apabila <br />
-              Bapak/Ibu/Saudara/i berkenan hadir.
-            </p>
+              {/* Main text */}
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                Merupakan suatu kehormatan & kebahagiaan bagi kami apabila{" "}
+                <br />
+                Bapak/Ibu/Saudara/i berkenan hadir.
+              </p>
 
-            {/* Thanks note */}
-            <div className='mt-6 flex items-center justify-center gap-2 text-gray-600 text-sm'>
-              <span>Terima kasih</span>
-              <Heart
-                size={16}
-                className='text-pink-500 animate-pulse'
-                fill='currentColor'
-              />
-              <span>Vidi & Tijani</span>
-            </div>
+              {/* Thanks note */}
+              <div className="mt-6 flex items-center justify-center gap-2 text-gray-600 text-sm">
+                <span>Terima kasih</span>
+                <Heart
+                  size={16}
+                  className="text-pink-500 animate-pulse"
+                  fill="currentColor"
+                />
+                <span>Vidi & Tijani</span>
+              </div>
 
-            {/* Small copyright */}
-            <p className='mt-4 text-xs text-gray-400'>
-              © {new Date().getFullYear()} Vidi & Tijani Wedding
-            </p>
-          </motion.footer>
+              {/* Small copyright */}
+              <p className="mt-4 text-xs text-gray-400">
+                © {new Date().getFullYear()} Vidi & Tijani Wedding
+              </p>
+            </motion.footer>
+          </AnimateOnScroll>
         </div>
       )}
     </main>

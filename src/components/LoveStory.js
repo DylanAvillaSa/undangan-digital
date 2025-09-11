@@ -34,55 +34,55 @@ export default function LoveStory({ T, background }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.7 }}
-      className={`py-14 px-6 bg-gradient-to-b ${background[T.card]}`}>
+      className={`py-14 px-6 bg-gradient-to-b ${background[T.card]}`}
+    >
       {/* Ornament Kiri */}
       <motion.div
+        initial={{ opacity: 0, translateX: -100 }}
+        whileInView={{ opacity: 1, translateX: 1 }}
         animate={{
           y: [0, -15, 0],
           rotate: [0, -2, 2, 0],
         }}
         transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
+          duration: 1.5,
+          ease: "easeOut",
         }}
-        className='absolute top-5 left-0 w-32 md:w-48 opacity-90'>
-        <img
-          src='/asset/ornament.png'
-          alt='ornament kiri'
-          className='w-full'
-        />
+        className="absolute top-5 left-0 w-32 md:w-48 opacity-90"
+      >
+        <img src="/asset/ornament.png" alt="ornament kiri" className="w-full" />
       </motion.div>
 
-      {/* Ornament Kiri */}
+      {/* Ornament Kanan */}
       <motion.div
+        initial={{ opacity: 0, translateX: 100 }}
+        whileInView={{ opacity: 1, translateX: 1 }}
         animate={{
           y: [0, -15, 0],
           rotate: [0, -2, 2, 0],
         }}
         transition={{
-          duration: 10,
-          repeat: Infinity,
-          ease: "easeInOut",
+          duration: 1.5,
+          ease: "easeOut",
         }}
-        className='absolute -bottom-10 right-1/2 translate-x-1/2 w-32 md:w-48 opacity-90'>
-        <img
-          src='/asset/ornament-1.png'
-          alt='ornament kiri'
-          className='w-full'
-        />
+        className="absolute top-5 right-0 w-32 md:w-48 opacity-90"
+      >
+        <img src="/asset/ornament.png" alt="ornament kiri" className="w-full" />
       </motion.div>
+
       <h3
-        className={`text-center font-bold text-2xl md:text-3xl mb-10 ${background[T].textMain}`}>
+        className={`text-center font-bold text-2xl md:text-3xl mb-10 ${background[T].textMain}`}
+      >
         Our Love Story
       </h3>
 
-      <div className='relative max-w-3xl mx-auto'>
+      <div className="relative max-w-3xl mx-auto">
         {/* Garis timeline */}
         <div
-          className={`absolute top-0 left-1/2 w-1 h-full ${background[T].cta} -translate-x-1/2`}></div>
+          className={`absolute top-0 left-1/2 w-1 h-full ${background[T].cta} -translate-x-1/2`}
+        ></div>
 
-        <div className='space-y-12'>
+        <div className="space-y-12">
           {stories.map((it, idx) => (
             <motion.div
               key={idx}
@@ -92,27 +92,27 @@ export default function LoveStory({ T, background }) {
               transition={{ duration: 0.7, delay: idx * 0.1 }}
               className={`relative w-full md:w-1/2 ${
                 idx % 2 === 0 ? "md:pr-10 md:text-right" : "md:pl-10 md:ml-auto"
-              }`}>
+              }`}
+            >
               {/* Titik di timeline */}
               <div
-                className={`absolute top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full ${background[T].cta} shadow-lg border-4 border-white z-10`}></div>
+                className={`absolute top-2 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full ${background[T].cta} shadow-lg border-4 border-white z-10`}
+              ></div>
 
               {/* Card */}
               <div
-                className={`p-5 rounded-2xl shadow-lg border ${background[T].border} ${background[T].card} bg-white`}>
-                <div className='flex items-center justify-between'>
+                className={`p-5 rounded-2xl shadow-lg border ${background[T].border} ${background[T].card} bg-white`}
+              >
+                <div className="flex items-center justify-between">
                   <div>
-                    <h4 className='font-bold text-lg'>{it.title}</h4>
-                    <p className='text-xs text-gray-500'>{it.when}</p>
+                    <h4 className="font-bold text-lg">{it.title}</h4>
+                    <p className="text-xs text-gray-500">{it.when}</p>
                   </div>
                   {it.highlight && (
-                    <Heart
-                      size={24}
-                      className='text-red-500 animate-pulse'
-                    />
+                    <Heart size={24} className="text-red-500 animate-pulse" />
                   )}
                 </div>
-                <p className='mt-3 text-sm text-gray-700'>{it.text}</p>
+                <p className="mt-3 text-sm text-gray-700">{it.text}</p>
               </div>
             </motion.div>
           ))}
