@@ -29,7 +29,7 @@ export default function Countdown2({ date }) {
 
   if (!timeLeft) {
     return (
-      <p className='text-center text-lg font-semibold text-green-600'>
+      <p className="text-center text-lg font-semibold text-green-600">
         Acara sudah dimulai 🎉
       </p>
     );
@@ -48,29 +48,32 @@ export default function Countdown2({ date }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.8, ease: "easeOut" }}
-      className='max-w-2xl mx-auto py-10'>
-      <h3 className='text-center text-lg md:text-xl font-bold mb-6'>
+      className="max-w-2xl mx-auto py-10"
+    >
+      <h3 className="text-center text-lg md:text-xl font-bold mb-6">
         Menuju Hari Bahagia
       </h3>
 
-      <div className='grid grid-cols-4 gap-4 text-center'>
+      <div className="grid grid-cols-4 gap-4 text-center">
         {Object.entries(timeLeft).map(([unit, value]) => (
           <div
             key={unit}
-            className='p-4 rounded-2xl shadow bg-white'>
-            <AnimatePresence mode='wait'>
+            className="p-4 rounded-2xl shadow bg-white text-black"
+          >
+            <AnimatePresence mode="wait">
               <motion.p
                 key={value}
                 variants={flipVariant}
-                initial='initial'
-                animate='animate'
-                exit='exit'
+                initial="initial"
+                animate="animate"
+                exit="exit"
                 transition={{ duration: 0.5 }}
-                className='text-2xl md:text-4xl font-bold'>
+                className="text-2xl md:text-4xl font-bold"
+              >
                 {value}
               </motion.p>
             </AnimatePresence>
-            <p className='text-sm text-gray-600 capitalize'>{unit}</p>
+            <p className="text-sm text-gray-600 capitalize">{unit}</p>
           </div>
         ))}
       </div>

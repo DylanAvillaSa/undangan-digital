@@ -1,13 +1,23 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import { PlayCircle, PauseCircle } from "lucide-react";
-import CountdownSection from "@/components/counter/CountDown";
+import { PlayCircle, PauseCircle, Heart } from "lucide-react";
+import Countdown2 from "@/components/counter/CounteDown2";
+import LoveStory from "@/components/LoveStory";
+import ProfilMempelai from "@/components/ProfilePerson";
+import AmplopGift from "@/components/GiftSection";
+import UcapanRSVP from "@/components/form/FormRSPV";
+import GallerySection from "@/components/GallerySection";
+import DetailAcara from "@/components/DetailAcaraSection";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
+import GallerySection2 from "@/components/GallerySection";
+import DetailAcara2 from "@/components/DetaiAcara2";
+import UcapanRSVP2 from "@/components/form/FormRSPVTemp2Warna";
 
 // ===== Dummy Messages (Ucapan & Doa) =====
-const messages = [
+const initialMessages = [
   {
     name: "Team Our Journey",
     time: "2025-08-09 16:17:53",
@@ -20,55 +30,95 @@ const messages = [
   },
 ];
 
-// ===== Variasi Warna (Tema Baru untuk Template 3) =====
+// ===== Variasi Warna (2 Tema Baru, tanpa Emerald) =====
 const THEMES = {
-  emerald: {
-    name: "Emerald Bliss",
+  blush: {
+    name: "Blush Rose",
     pageBg:
-      "bg-[radial-gradient(1000px_600px_at_0%_-10%,#e6fff5,transparent),radial-gradient(1000px_600px_at_120%_0%,#ccffe6,transparent)] bg-[#f5fffa]",
-    headerGrad: "bg-gradient-to-r from-emerald-800 via-green-700 to-teal-600",
-    card: "bg-gradient-to-br from-[#ecfff7] via-[#d9fff0] to-[#ccffeb]",
-    border: "border-emerald-300",
-    textMain: "text-emerald-900",
-    cta: "bg-gradient-to-r from-emerald-600 via-green-500 to-teal-500 hover:from-emerald-500 hover:to-green-400",
-    chip: "bg-emerald-100 text-emerald-800",
+      "bg-[radial-gradient(1200px_600px_at_20%_0%,#fff7f9,transparent),radial-gradient(1200px_600px_at_100%_20%,#fff0f5,transparent)] bg-[#fffafa]",
+    headerGrad: "bg-gradient-to-r from-rose-500 via-pink-400 to-rose-300",
+    card: "bg-gradient-to-br from-[#fff5f7] via-[#ffeef2] to-[#ffe6eb]",
+    border: "border-rose-300",
+    textMain: "text-rose-900",
+    cta: "bg-gradient-to-r from-rose-500 via-pink-400 to-rose-300 hover:from-rose-400 hover:to-pink-300",
+    chip: "bg-rose-100 text-rose-800",
   },
-  sunset: {
-    name: "Sunset Glow",
+
+  royal: {
+    name: "Royal Navy",
     pageBg:
-      "bg-[radial-gradient(1000px_600px_at_0%_10%,#fff0e6,transparent),radial-gradient(1000px_600px_at_100%_0%,#ffe6cc,transparent)] bg-[#fffaf5]",
-    headerGrad: "bg-gradient-to-r from-orange-700 via-pink-600 to-red-500",
-    card: "bg-gradient-to-br from-[#fff3ec] via-[#ffe6e0] to-[#ffdacc]",
-    border: "border-orange-300",
-    textMain: "text-orange-900",
-    cta: "bg-gradient-to-r from-orange-600 via-pink-500 to-red-500 hover:from-orange-500 hover:to-pink-400",
-    chip: "bg-orange-100 text-orange-800",
-  },
-  ocean: {
-    name: "Ocean Breeze",
-    pageBg:
-      "bg-[radial-gradient(1000px_600px_at_10%_-10%,#e6f7ff,transparent),radial-gradient(1000px_600px_at_120%_0%,#cceeff,transparent)] bg-[#f5fcff]",
-    headerGrad: "bg-gradient-to-r from-cyan-800 via-blue-700 to-indigo-600",
-    card: "bg-gradient-to-br from-[#f0fbff] via-[#e0f7ff] to-[#d6f0ff]",
-    border: "border-sky-300",
-    textMain: "text-sky-900",
-    cta: "bg-gradient-to-r from-sky-600 via-blue-500 to-indigo-500 hover:from-sky-500 hover:to-blue-400",
-    chip: "bg-sky-100 text-sky-800",
+      "bg-[radial-gradient(1200px_600px_at_10%_0%,#f5f7ff,transparent),radial-gradient(1200px_600px_at_100%_30%,#eef2ff,transparent)] bg-[#fafbff]",
+    headerGrad: "bg-gradient-to-r from-indigo-900 via-blue-700 to-sky-500",
+    card: "bg-gradient-to-br from-[#f0f4ff] via-[#e6ecff] to-[#dce4ff]",
+    border: "border-indigo-300",
+    textMain: "text-indigo-900",
+    cta: "bg-gradient-to-r from-indigo-700 via-blue-600 to-sky-500 hover:from-indigo-600 hover:to-blue-400",
+    chip: "bg-indigo-100 text-indigo-800",
   },
 };
 
-export default function GoldTemplateThree() {
+const containerVariants = {
+  hidden: { opacity: 0, y: 30, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    scale: 1,
+    transition: {
+      duration: 0.4,
+      staggerChildren: 0.1,
+      ease: "easeOut",
+    },
+  },
+  exit: { opacity: 0, y: 20, scale: 0.8, transition: { duration: 0.3 } },
+};
+
+// Variants untuk tiap tombol
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.5, y: 10 },
+  visible: { opacity: 1, scale: 1, y: 0 },
+  exit: { opacity: 0, scale: 0.5, y: 10 },
+};
+export default function GoldTemplate3() {
   const rsvpRef = useRef(null);
   const audioRef = useRef(null);
 
+  const [switcher, setSwitcher] = useState(false);
   const [opened, setOpened] = useState(false);
   const [isPlaying, setIsPlaying] = useState(true);
-  const [theme, setTheme] = useState("emerald");
-  const [formData, setFormData] = useState({ nama: "", kehadiran: "" });
+  const [theme, setTheme] = useState("blush");
 
+  const [formData, setFormData] = useState({
+    nama: "",
+    kehadiran: "",
+  });
+
+  const [messages, setMessages] = useState(() => {
+    try {
+      const raw = localStorage.getItem("msgs_v1");
+      return raw ? JSON.parse(raw) : initialMessages;
+    } catch (e) {
+      return initialMessages;
+    }
+  });
+
+  const [guestForm, setGuestForm] = useState({ name: "", message: "" });
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const slides = [
+    "/gallery/p1.jpg",
+    "/gallery/p2.jpg",
+    "/gallery/p3.jpg",
+    "/gallery/p4.jpg",
+  ];
   const T = THEMES[theme];
 
   const handleOpen = () => setOpened(true);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((s) => (s === slides.length - 1 ? 0 : s + 1));
+    }, 4000); // ganti slide tiap 4 detik
+    return () => clearInterval(timer);
+  }, [slides.length]);
 
   useEffect(() => {
     if (opened && rsvpRef.current) {
@@ -77,6 +127,10 @@ export default function GoldTemplateThree() {
       }, 900);
     }
   }, [opened]);
+
+  useEffect(() => {
+    localStorage.setItem("msgs_v1", JSON.stringify(messages));
+  }, [messages]);
 
   const handleChange = (e) =>
     setFormData((s) => ({ ...s, [e.target.name]: e.target.value }));
@@ -98,294 +152,544 @@ export default function GoldTemplateThree() {
     }
   };
 
+  const addGuestMessage = (e) => {
+    e.preventDefault();
+    if (!guestForm.name || !guestForm.message) return;
+    const newMsg = {
+      name: guestForm.name,
+      time: new Date().toISOString().slice(0, 19).replace("T", " "),
+      message: guestForm.message,
+    };
+    setMessages((s) => [newMsg, ...s]);
+    setGuestForm({ name: "", message: "" });
+  };
+
+  const handleSaveDate = () => {
+    // Tanggal event harus string ISO: "2025-11-25T08:00:00"
+    const startDate = new Date("2025-11-25T08:00:00");
+    const endDate = new Date("2025-11-25T11:00:00");
+
+    if (isNaN(startDate) || isNaN(endDate)) {
+      alert("Tanggal event tidak valid!");
+      return;
+    }
+
+    const formatForGoogle = (date) =>
+      date.toISOString().replace(/-|:|\.\d{3}/g, "") + "Z";
+
+    const start = formatForGoogle(startDate);
+    const end = formatForGoogle(endDate);
+
+    const url = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent(
+      "Vidi & Riffany Wedding"
+    )}&dates=${start}/${end}&details=${encodeURIComponent(
+      "Acara pernikahan kami"
+    )}&location=${encodeURIComponent("Masjid Al-Falah, Jakarta Selatan")}`;
+
+    window.open(url, "_blank");
+  };
+
   return (
     <main
       className={`min-h-screen ${T.pageBg} relative overflow-hidden`}
-      style={{ fontFamily: "'Playfair Display', serif" }}>
-      {/* Musik Latar + Controller */}
+      style={{ fontFamily: "'Playfair Display', serif" }}
+    >
+      {/* ===== Musik Latar + Controller ===== */}
       <audio
         ref={audioRef}
         autoPlay
         loop
-        src='/music/bg-wedding.mp3'
-        className='hidden'
+        src="/bg-wedding.mp3"
+        className="hidden"
       />
-      <button
-        onClick={toggleAudio}
-        className={`fixed z-40 bottom-4 right-4 p-3 rounded-full shadow-lg ${T.cta} text-white`}>
-        {isPlaying ? <PauseCircle size={28} /> : <PlayCircle size={28} />}
-      </button>
 
-      {/* Theme Switcher */}
-      <div className='fixed top-4 left-1/2 -translate-x-1/2 z-30'>
-        <div className='flex gap-2 p-1 rounded-full bg-white/70 backdrop-blur shadow'>
-          {Object.entries(THEMES).map(([key, val]) => (
-            <button
-              key={key}
-              onClick={() => setTheme(key)}
-              className={`px-3 py-1 text-xs md:text-sm rounded-full border ${
-                theme === key
-                  ? `${T.chip} font-semibold`
-                  : "bg-white text-gray-700 hover:bg-gray-50"
-              }`}>
-              {val.name}
-            </button>
-          ))}
+      {/* Floating controls: audio, theme, dark */}
+      <div className="fixed z-50 bottom-4 right-4">
+        <motion.button
+          whileHover={{ scale: 1.1, rotate: 5 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={toggleAudio}
+          className={`p-3 rounded-full shadow-lg ${
+            T.cta
+          } text-white flex items-center justify-center group ${
+            isPlaying && "opacity-35"
+          }`}
+          aria-label="Toggle Music"
+        >
+          {isPlaying ? <PauseCircle size={22} /> : <PlayCircle size={22} />}
+          {/* Tooltip */}
+          <span className="absolute right-full mr-2 px-2 py-1 text-xs bg-black/80 text-white rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+            {isPlaying ? "Pause Music" : "Play Music"}
+          </span>
+        </motion.button>
+      </div>
+
+      {/* ===== Switcher (tengah bawah) ===== */}
+      <div className="fixed z-50 bottom-4 left-1/2 -translate-x-1/2">
+        <div
+          className={`p-3 rounded-full shadow-lg text-xs ${T.cta} 
+      text-white flex items-center justify-center ${
+        switcher ? "hidden" : "opacity-35"
+      } group`}
+          onClick={() => setSwitcher(!switcher)}
+        >
+          Theme
         </div>
       </div>
 
-      {/* Welcome Screen */}
+      <AnimatePresence>
+        {switcher && (
+          <motion.div
+            key="theme-switcher"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            className="flex gap-2 items-end fixed bottom-5 left-1/2 -translate-x-1/2 z-50"
+          >
+            {Object.entries(THEMES).map(([key, val]) => (
+              <motion.button
+                key={key}
+                variants={itemVariants}
+                whileHover={{ scale: 1.15, rotate: 6 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setTheme(key);
+                  setSwitcher(false);
+                }}
+                className={`w-10 h-10 rounded-full shadow-lg flex items-center justify-center relative group transition-all 
+                  ${val.chip}
+                  ${
+                    theme === key ? "ring-2 ring-offset-2 ring-yellow-500" : ""
+                  }`}
+                style={{
+                  // warna utama
+                  border: `2px solid ${val.borderColor || "#fff"}`, // optional: border dari theme
+                }}
+                aria-label={`Tema ${val.name}`}
+              >
+                {/* Tooltip */}
+                <span className="absolute -top-7 px-2 py-1 text-xs bg-black/80 text-white rounded-md opacity-0 group-hover:opacity-100 transition whitespace-nowrap">
+                  {val.name}
+                </span>
+              </motion.button>
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* ===== Welcome Screen ===== */}
       {!opened && (
         <motion.section
-          initial={{ opacity: 0, scale: 0.92 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.9 }}
-          className='min-h-screen flex flex-col items-center justify-center px-6 text-center'>
-          <motion.div
-            initial={{ y: 60, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 1 }}
-            className={`rounded-3xl shadow-2xl p-8 max-w-lg w-full border ${T.card} ${T.border}`}>
-            <p className='mb-3 text-sm text-gray-600'>We Invite You To</p>
-            <motion.div
-              initial={{ scale: 0 }}
-              animate={{ scale: 1 }}
-              transition={{ duration: 1, delay: 0.3 }}
-              className='w-44 h-44 mx-auto rounded-full overflow-hidden border-4 border-yellow-400 mb-5 shadow-lg'>
-              <Image
-                src='/images/tmp.jpg'
-                width={176}
-                height={176}
-                alt='Pasangan'
-                className='object-cover h-full w-full'
-              />
-            </motion.div>
-            <h1
-              className={`text-4xl font-extrabold mb-1 text-transparent bg-clip-text ${T.headerGrad}`}>
-              Vidi & Riffany
-            </h1>
-            <p className='mt-2 text-sm text-gray-700'>
-              Dengan penuh rasa syukur, kami mengundang Anda ke acara pernikahan
-              kami.
-            </p>
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1 }}
+          className="relative min-h-screen flex items-center justify-center"
+        >
+          {/* Background Foto */}
+          <Image
+            src="/images/bg-wedding.jpg"
+            alt="Pasangan"
+            fill
+            className="object-cover w-full h-full opacity-95"
+            priority
+          />
+
+          {/* Overlay gelap tipis biar teks keliatan */}
+          <div className="absolute inset-0 bg-black/40" />
+
+          {/* Konten Tengah */}
+          <div className="relative z-10 text-center text-white px-6">
+            <p className="text-sm italic mb-2">The Wedding Of</p>
+
+            {/* Ornamen lingkaran daun + inisial */}
+            <div
+              className={`mx-auto w-44 h-44 flex items-center justify-center rounded-full border-4 ${THEMES[theme].border} relative mb-6`}
+            >
+              <span className="text-3xl font-bold">A & H</span>
+              {/* kalau mau tambah ornamen daun bisa pake gambar PNG transparan */}
+              {/* <Image
+                src="/images/ornament-daun.png"
+                alt="Ornamen Daun"
+                fill
+                className="object-contain opacity-90 pointer-events-none"
+              /> */}
+            </div>
+
+            <p className="mb-1 text-base">Kepada Yth.</p>
+            <h2 className="text-xl font-semibold mb-6">Ismed Novian</h2>
+
+            {/* Tombol Buka Undangan */}
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={handleOpen}
-              className={`mt-6 text-white px-7 py-3 rounded-full shadow-xl ${T.cta}`}>
-              Buka Undangan ✨
+              className={`bg-gradient-to-r ${THEMES[theme].cta} text-white px-8 py-3 rounded-full shadow-lg flex items-center justify-center gap-2 mx-auto`}
+            >
+              <span>📖</span> Buka Undangan
             </motion.button>
-          </motion.div>
+          </div>
         </motion.section>
       )}
 
-      {/* UNDANGAN LENGKAP */}
+      {/* ===== UNDANGAN LENGKAP ===== */}
       {opened && (
-        <div className='relative z-10'>
-          {/* Countdown */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className='pt-8'>
-            <CountdownSection date='2025-11-25T08:00:00' />
-          </motion.div>
-
-          {/* Nama & Detail */}
-          <motion.section
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className='text-center py-12 px-4'>
-            <h2
-              className={`text-3xl md:text-4xl font-extrabold mb-2 text-transparent bg-clip-text ${T.headerGrad}`}>
-              Vidi & Riffany
-            </h2>
-            <p className='text-sm md:text-base max-w-md mx-auto text-gray-700'>
-              Sabtu, 25 November 2025
-              <br />
-              Gedung Serbaguna – Jakarta Selatan
-            </p>
-          </motion.section>
-
-          {/* Lokasi */}
-          <motion.section
-            initial={{ opacity: 0, scale: 0.85 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8 }}
-            className='text-center py-8 px-4'>
-            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Lokasi Acara
-            </h3>
-            <div
-              className={`rounded-2xl overflow-hidden shadow-xl border ${T.border} max-w-3xl mx-auto`}>
-              <iframe
-                src='https://www.google.com/maps?q=-6.244669,106.800483&z=15&output=embed'
-                width='100%'
-                height='300'
-                className='border-0'
-                loading='lazy'
+        <div className="relative z-10 pb-24">
+          {/* Banner Section */}
+          <AnimateOnScroll>
+            <div className="relative w-full h-[100vh] overflow-hidden">
+              {/* Background dengan efek zoom */}
+              <Image
+                src="/images/bg-wedding.jpg"
+                width={1920}
+                height={1080}
+                alt="Pasangan"
+                className="object-cover w-full h-full scale-110 animate-slow-zoom"
+                priority
               />
-            </div>
-          </motion.section>
 
-          {/* Photo Slider */}
-          <motion.section
-            initial={{ x: 100, opacity: 0 }}
-            whileInView={{ x: 0, opacity: 1 }}
-            transition={{ duration: 0.9 }}
-            className='py-10 px-4 md:px-6'>
-            <h3
-              className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
-              Momen Kebersamaan
-            </h3>
-            <div className='flex gap-4 overflow-x-auto snap-x snap-mandatory pb-2'>
-              {[...Array(8)].map((_, i) => (
-                <Image
-                  key={i}
-                  src={`/images/slider/${i + 1}.jpg`}
-                  width={260}
-                  height={340}
-                  alt={`Slider ${i + 1}`}
-                  className='rounded-xl shadow-lg object-cover w-[220px] h-[280px] md:w-[260px] md:h-[340px] snap-center'
-                />
-              ))}
-            </div>
-          </motion.section>
+              {/* Overlay gelap biar teks lebih jelas */}
+              <div className="absolute inset-0 bg-black/40" />
 
-          {/* Video */}
-          <motion.section
-            initial={{ scale: 0.8, opacity: 0 }}
-            whileInView={{ scale: 1, opacity: 1 }}
-            transition={{ duration: 0.9 }}
-            className='py-10 text-center px-4'>
-            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Video Kami
-            </h3>
-            <div
-              className={`max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-2xl border ${T.border}`}>
-              <video
-                src='/videos/love-story.mp4'
-                controls
-                className='w-full h-auto'
-              />
-            </div>
-          </motion.section>
+              {/* Konten Utama */}
+              <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-10 text-white">
+                {/* The Wedding Of */}
+                <motion.h1
+                  initial={{ opacity: 0, y: -30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8 }}
+                  className="font-[var(--font-playfair)] text-lg md:text-2xl mb-2"
+                >
+                  The Wedding Of
+                </motion.h1>
 
-          {/* Galeri */}
-          <motion.section
-            initial={{ y: 80, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.9 }}
-            className='py-10 px-4 md:px-6'>
-            <h3
-              className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
-              Galeri Foto
-            </h3>
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 md:gap-4 max-w-6xl mx-auto'>
-              {[...Array(16)].map((_, i) => (
-                <Image
-                  key={i}
-                  src={`/images/galeri/${i + 1}.jpg`}
-                  width={400}
-                  height={400}
-                  alt={`Galeri ${i + 1}`}
-                  className={`rounded-xl border ${T.border} object-cover w-full h-40 sm:h-44 md:h-48 shadow`}
-                />
-              ))}
-            </div>
-          </motion.section>
+                {/* Nama Pasangan */}
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 1 }}
+                  className="flex gap-2 items-center justify-center text-3xl md:text-5xl font-bold"
+                >
+                  <span className="font-[var(--font-vibes)]">Anissa</span>
+                  <span className="font-[var(--font-vibes)] text-4xl">&</span>
+                  <span className="font-[var(--font-vibes)]">Hamzah</span>
+                </motion.div>
 
-          {/* Amplop Digital */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.9 }}
-            className='text-center py-10 px-4'>
-            <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
-              Amplop Digital
-            </h3>
-            <div
-              className={`max-w-xl mx-auto p-6 rounded-2xl shadow-xl border ${T.border} ${T.card}`}>
-              <p className='text-sm text-gray-700 mb-4'>
-                Dengan segala hormat, jika berkenan memberikan hadiah, Anda
-                dapat mengirimkan melalui e-wallet.
-              </p>
-              <div className='flex flex-col sm:flex-row gap-3 justify-center'>
-                <button
-                  className={`px-5 py-2 rounded-full text-white ${T.cta}`}>
-                  Kirim via E-Wallet
-                </button>
-                <button className='px-5 py-2 rounded-full border bg-white hover:bg-gray-50'>
-                  Salin No. Rekening
-                </button>
+                {/* Save The Date */}
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ duration: 1.2 }}
+                  className="mt-3 font-[var(--font-vibes)] text-2xl md:text-3xl"
+                >
+                  Save The Date
+                </motion.p>
+
+                {/* Box tanggal */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 1.2 }}
+                  className="mt-6 bg-white rounded-xl shadow-lg flex items-center px-6 py-3 text-gray-800"
+                >
+                  <span
+                    className={`${THEMES[theme].cta} text-white px-3 py-1 rounded-md font-semibold mr-3`}
+                  >
+                    Jumat
+                  </span>
+                  <span className="font-bold text-lg">19 September 2025</span>
+                </motion.div>
+
+                {/* Countdown */}
+                <div className="px-4">
+                  <Countdown2 date="2025-11-25T08:00:00" />
+                </div>
+              </div>
+
+              {/* Ornament bawah */}
+              <div className="absolute bottom-0 left-0 w-40 md:w-60 opacity-80 pointer-events-none">
+                <img src="/asset/ornament-bawah.png" alt="ornament bawah" />
               </div>
             </div>
-          </motion.section>
+          </AnimateOnScroll>
 
-          {/* Ucapan & Doa */}
+          {/* Profile Mempelai */}
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+              className="py-16 px-6 relative bg-gradient-to-b from-white to-gray-50"
+            >
+              {/* Judul Section */}
+              <div className="text-center mb-12">
+                <h2 className="font-[var(--font-playfair)] text-2xl md:text-4xl text-gray-800 mb-2">
+                  Profil Mempelai
+                </h2>
+                <p className="text-gray-600 text-sm md:text-base">
+                  Dengan memohon rahmat dan ridho Allah SWT, perkenankanlah kami
+                  mempersembahkan kisah bahagia ini
+                </p>
+              </div>
+
+              {/* Grid Profile */}
+              <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
+                {/* Mempelai Wanita */}
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  className="flex flex-col items-center text-center bg-white p-6 rounded-2xl shadow-lg"
+                >
+                  <div className="relative w-40 h-40 md:w-48 md:h-48 mb-6">
+                    <Image
+                      src="/profil/mempelai-wanita.png"
+                      alt="Mempelai Wanita"
+                      fill
+                      className="rounded-full object-cover border-4 border-[var(--color-primary)] shadow-md"
+                    />
+                  </div>
+                  <h3 className="font-[var(--font-vibes)] text-3xl text-gray-800">
+                    Anissa Putri
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-2">
+                    Putri dari Bapak Ahmad & Ibu Siti
+                  </p>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-md">
+                    Seorang wanita penyayang, penuh perhatian, dan selalu ceria
+                    yang kini siap melangkah menuju babak baru kehidupannya.
+                  </p>
+                </motion.div>
+
+                {/* Mempelai Pria */}
+                <motion.div
+                  whileHover={{ scale: 1.03 }}
+                  className="flex flex-col items-center text-center p-6 rounded-2xl shadow-lg"
+                >
+                  <div className="relative w-40 h-40 md:w-48 md:h-48 mb-6">
+                    <Image
+                      src="/profil/mempelai-pria.png"
+                      alt="Mempelai Pria"
+                      fill
+                      className="rounded-full object-cover border-4 border-[var(--color-primary)] shadow-md"
+                    />
+                  </div>
+                  <h3 className="font-[var(--font-vibes)] text-3xl text-gray-800">
+                    Vidi Lukman
+                  </h3>
+                  <p className="text-gray-500 text-sm mb-2">
+                    Putra dari Bapak Yusuf & Ibu Aminah
+                  </p>
+                  <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-md">
+                    Seorang pria sederhana, penuh tanggung jawab, dan sabar yang
+                    telah menemukan belahan jiwanya.
+                  </p>
+                </motion.div>
+              </div>
+
+              {/* Ornamen Dekorasi */}
+              <motion.img
+                src="/asset/florar.png"
+                alt="ornamen kiri"
+                className="absolute top-0 left-0 w-28 md:w-48 opacity-60 pointer-events-none"
+                initial={{ opacity: 0, x: -50, rotate: -10 }}
+                whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+                transition={{ duration: 1, ease: "easeOut" }}
+                viewport={{ once: true }}
+              />
+
+              <motion.img
+                src="/asset/florar.png"
+                alt="ornamen kanan"
+                className="absolute bottom-0 right-0 w-32 md:w-40 opacity-60 pointer-events-none"
+                initial={{ opacity: 0, x: 50, rotate: 10 }}
+                whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+                transition={{ duration: 1, ease: "easeOut", delay: 0.2 }}
+                viewport={{ once: true }}
+              />
+            </motion.section>
+          </AnimateOnScroll>
+
+          {/* Love Story Timeline */}
           <motion.section
-            initial={{ y: 50, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.9 }}
-            className='py-10 px-4'>
-            <h3
-              className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
-              Ucapan & Doa
-            </h3>
-            <div className='space-y-4 max-w-2xl mx-auto'>
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`p-4 rounded-2xl shadow border ${T.border} bg-white`}>
-                  <p className='font-semibold'>{msg.name}</p>
-                  <p className='text-xs text-gray-500 mb-2'>{msg.time}</p>
-                  <p className='text-gray-800'>{msg.message}</p>
-                </div>
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+            className="py-14 px-6 relative max-w-3xl mx-auto"
+          >
+            <h2
+              className={`text-2xl md:text-3xl font-[var(--font-vibes)] text-center mb-10 text-transparent bg-clip-text ${THEMES[theme].headerGrad}`}
+            >
+              Our Love Story
+            </h2>
+
+            <div className="relative border-l-4 border-dashed border-gray-300 dark:border-gray-600">
+              {[
+                {
+                  year: "2019",
+                  title: "First Met",
+                  desc: "Kami pertama kali bertemu di kampus dan langsung merasa ada sesuatu yang berbeda.",
+                },
+                {
+                  year: "2020",
+                  title: "First Date",
+                  desc: "Momen pertama kali jalan bersama menjadi kenangan yang tak terlupakan.",
+                },
+                {
+                  year: "2022",
+                  title: "Engagement",
+                  desc: "Kami memutuskan untuk mengikat janji dalam sebuah pertunangan sederhana.",
+                },
+                {
+                  year: "2025",
+                  title: "Wedding Day",
+                  desc: "Hari spesial di mana kami berjanji sehidup semati.",
+                },
+              ].map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  className="mb-10 ml-6 relative"
+                  initial={{ opacity: 0, x: idx % 2 === 0 ? -60 : 60 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.8,
+                    ease: "easeOut",
+                    delay: idx * 0.2,
+                  }}
+                  viewport={{ once: true, amount: 0.3 }}
+                >
+                  {/* Dot Icon */}
+                  <span
+                    className={`absolute -left-3 top-1 w-6 h-6 rounded-full flex items-center justify-center shadow-md ${THEMES[theme].cta}`}
+                  >
+                    <span className="w-2 h-2 bg-white rounded-full"></span>
+                  </span>
+
+                  {/* Card */}
+                  <div
+                    className={`bg-white dark:${THEMES[theme].chip} rounded-xl shadow-lg p-5`}
+                  >
+                    <p className="text-sm text-gray-400">{item.year}</p>
+                    <h3
+                      className={`text-lg font-semibold ${THEMES[theme].text}`}
+                    >
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
               ))}
             </div>
           </motion.section>
 
-          {/* RSVP */}
-          <motion.section
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 1 }}
-            className='py-12 px-4'
-            ref={rsvpRef}>
-            <h3
-              className={`text-center font-bold text-lg md:text-xl mb-6 ${T.textMain}`}>
-              Konfirmasi Kehadiran
-            </h3>
-            <form
-              onSubmit={handleSubmit}
-              className={`max-w-md mx-auto flex flex-col gap-3 p-6 rounded-2xl border ${T.border} ${T.card} shadow`}>
-              <input
-                type='text'
-                name='nama'
-                value={formData.nama}
-                onChange={handleChange}
-                placeholder='Nama Anda'
-                className='p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-400 bg-white'
-                required
-              />
-              <select
-                name='kehadiran'
-                value={formData.kehadiran}
-                onChange={handleChange}
-                className='p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-green-400 bg-white'
-                required>
-                <option value=''>--Pilih Kehadiran--</option>
-                <option value='hadir'>Hadir</option>
-                <option value='tidak hadir'>Tidak Hadir</option>
-              </select>
-              <button
-                type='submit'
-                className={`mt-1 py-3 rounded-full text-white shadow ${T.cta}`}>
-                Kirim Konfirmasi
-              </button>
-            </form>
-          </motion.section>
+          {/* Gallery */}
+          <GallerySection2 />
+
+          {/* Detail Acara (Akad & Resepsi) */}
+          <DetailAcara2 T={theme} background={THEMES} />
+
+          {/* QR + Map Embed + Gallery small */}
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="py-10 px-4"
+            >
+              <div className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div
+                  className={`p-4 rounded-2xl border ${T.border} ${T.card} shadow col-span-2`}
+                >
+                  <h4 className="font-semibold mb-2">Peta Lokasi</h4>
+                  <iframe
+                    src="https://www.google.com/maps?q=-6.244669,106.800483&z=15&output=embed"
+                    width="100%"
+                    height="200"
+                    className="border-0 rounded-md"
+                    loading="lazy"
+                  />
+                </div>
+              </div>
+            </motion.section>
+          </AnimateOnScroll>
+
+          {/* Ucapan & Doa + Guest Book form */}
+          <UcapanRSVP2 T={theme} background={THEMES} />
+
+          {/* Dress Code & Info Tambahan */}
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 25 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="text-center py-8 px-4"
+            >
+              <h3 className={`font-bold text-lg md:text-xl mb-4 ${T.textMain}`}>
+                Dress Code & Info
+              </h3>
+              <p className="max-w-2xl mx-auto text-sm text-gray-700">
+                Dress code: Elegant Casual (warna pastel) — Mohon datang tepat
+                waktu. Jika membawa anak, pastikan diawasi.
+              </p>
+            </motion.section>
+          </AnimateOnScroll>
+
+          {/* Wishlist / Gift Registry */}
+          <AnimateOnScroll>
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="py-10 px-4"
+            >
+              <AmplopGift background={THEMES} T={theme} />
+            </motion.section>
+          </AnimateOnScroll>
+
+          {/* Footer */}
+          <AnimateOnScroll>
+            <motion.footer
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className="relative text-center py-10 px-6 mt-12 bg-gradient-to-t from-gray-50 to-white"
+            >
+              {/* Divider line */}
+              <div
+                className={`absolute top-0 left-1/2 -translate-x-1/2 w-20 h-1 bg-gradient-to-r ${THEMES[theme].cta} rounded-full`}
+              ></div>
+
+              {/* Main text */}
+              <p className="text-base md:text-lg text-gray-700 leading-relaxed">
+                Merupakan suatu kehormatan & kebahagiaan bagi kami apabila{" "}
+                <br />
+                Bapak/Ibu/Saudara/i berkenan hadir.
+              </p>
+
+              {/* Thanks note */}
+              <div className="mt-6 flex items-center justify-center gap-2 text-gray-600 text-sm">
+                <span>Terima kasih</span>
+                <Heart
+                  size={16}
+                  className="text-pink-500 animate-pulse"
+                  fill="currentColor"
+                />
+                <span>Vidi & Tijani</span>
+              </div>
+
+              {/* Small copyright */}
+              <p className="mt-4 text-xs text-gray-400">
+                © {new Date().getFullYear()} Vidi & Tijani Wedding
+              </p>
+            </motion.footer>
+          </AnimateOnScroll>
         </div>
       )}
     </main>
