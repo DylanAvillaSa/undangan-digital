@@ -386,25 +386,20 @@ export default function GoldTemplate3() {
                   Save The Date
                 </motion.p>
 
+                {/* Countdown */}
+                <div className="px-4">
+                  <Countdown2 date="2025-11-25T08:00:00" />
+                </div>
+
                 {/* Box tanggal */}
                 <motion.div
                   initial={{ opacity: 0, y: 30 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 1.2 }}
-                  className="mt-6 bg-white rounded-xl shadow-lg flex items-center px-6 py-3 text-gray-800"
+                  className={`${THEMES[theme].cta} mt-6 bg-white rounded-xl shadow-lg flex items-center px-6 py-3`}
                 >
-                  <span
-                    className={`${THEMES[theme].cta} text-white px-3 py-1 rounded-md font-semibold mr-3`}
-                  >
-                    Jumat
-                  </span>
                   <span className="font-bold text-lg">19 September 2025</span>
                 </motion.div>
-
-                {/* Countdown */}
-                <div className="px-4">
-                  <Countdown2 date="2025-11-25T08:00:00" />
-                </div>
               </div>
 
               {/* Ornament bawah */}
