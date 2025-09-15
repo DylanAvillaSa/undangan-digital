@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 export default function TheDate({ background, theme }) {
-  // Hitung countdown
-  const targetDate = new Date("2025-05-14T19:00:00");
+  // Ganti ke tanggal di masa depan
+  const targetDate = new Date("2025-12-14T19:00:00");
+
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
@@ -13,7 +14,7 @@ export default function TheDate({ background, theme }) {
   });
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    const updateCountdown = () => {
       const now = new Date();
       const diff = targetDate - now;
 
@@ -25,10 +26,14 @@ export default function TheDate({ background, theme }) {
           seconds: Math.floor((diff / 1000) % 60),
         });
       } else {
-        clearInterval(timer);
+        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
       }
-    }, 1000);
+    };
 
+    // panggil langsung sekali biar gak delay 1 detik
+    updateCountdown();
+
+    const timer = setInterval(updateCountdown, 1000);
     return () => clearInterval(timer);
   }, []);
 
@@ -51,7 +56,7 @@ export default function TheDate({ background, theme }) {
         whileInView={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
         viewport={{ once: true }}
-        className={`bg-gradient-to-r from-${background[theme].chip} to-${background[theme].cta} text-white rounded-lg shadow-md flex justify-around py-4 text-center mb-10`}
+        className={`bg-gradient-to-r ${background[theme].chip} ${background[theme].cta} text-white rounded-lg shadow-md flex justify-around py-4 text-center mb-10`}
       >
         <div>
           <p className="text-3xl font-bold">{timeLeft.days}</p>

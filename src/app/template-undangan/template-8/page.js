@@ -117,6 +117,7 @@ export default function GoldTemplate4() {
   const scale = useTransform(scrollY, [0, 1000], [1, 1.2]);
   const ref = useRef(null);
   const [target, setTarget] = useState(null);
+  const [guestBook, setGuestBook] = useState([]);
 
   const { scrollYProgress } = useScroll(
     ref.current ? { target: ref, offset: ["start end", "end start"] } : {}
@@ -860,7 +861,98 @@ export default function GoldTemplate4() {
           <Gallery3 background={THEMES} theme={theme} />
 
           {/* Ucapan & Doa + Guest Book form */}
-          <UcapanRSVP2 T={theme} background={THEMES} />
+          <section
+            className={`relative py-16 px-6 md:px-20 ${THEMES[theme].pageBg}`}
+          >
+            {/* Title */}
+            <motion.h2
+              initial={{ opacity: 0, y: -20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="text-3xl md:text-4xl font-serif text-center tracking-wide mb-10"
+            >
+              Ucapan Doa & RSVP
+            </motion.h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-5xl mx-auto">
+              {/* Form Ucapan */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true }}
+                className={`p-6 rounded-2xl shadow-md ${THEMES[theme].card} border ${THEMES[theme].border}`}
+              >
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                  Kirim Ucapan & Doa
+                </h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <input
+                    type="text"
+                    placeholder="Nama Anda"
+                    value={formData.nama}
+                    onChange={(e) => setForm({ ...form, name: e.target.value })}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black/60 outline-none"
+                    required
+                  />
+                  <textarea
+                    placeholder="Tulis ucapan & doa terbaik..."
+                    rows="4"
+                    value={formData.kehadiran}
+                    onChange={(e) =>
+                      setForm({ ...form, message: e.target.value })
+                    }
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black/60 outline-none resize-none"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className={`w-full py-2 rounded-lg font-medium text-white ${THEMES[theme].cta}`}
+                  >
+                    Kirim
+                  </button>
+                </form>
+              </motion.div>
+
+              {/* List Ucapan */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.7 }}
+                viewport={{ once: true }}
+                className="space-y-4"
+              >
+                <h3 className="text-xl font-semibold mb-4 text-gray-800">
+                  Ucapan dari Tamu
+                </h3>
+                <div className="max-h-[400px] overflow-y-auto pr-2 space-y-3">
+                  {guestBook.length === 0 ? (
+                    <p className="text-gray-500 italic">
+                      Belum ada ucapan, jadilah yang pertama 💌
+                    </p>
+                  ) : (
+                    guestBook.map((entry) => (
+                      <motion.div
+                        key={entry.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className={`p-4 rounded-lg border ${THEMES[theme].border} bg-white/80 backdrop-blur-md`}
+                      >
+                        <p className="font-semibold text-gray-900">
+                          {entry.name}
+                        </p>
+                        <p className="text-gray-700 text-sm mt-1">
+                          {entry.message}
+                        </p>
+                      </motion.div>
+                    ))
+                  )}
+                </div>
+              </motion.div>
+            </div>
+          </section>
 
           {/* Dress Code & Info Tambahan */}
           <AnimateOnScroll>
