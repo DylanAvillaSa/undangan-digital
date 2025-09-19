@@ -497,126 +497,140 @@ export default function GoldTemplate4() {
             </motion.p>
           </motion.section>
 
-          {/* Profile Mempelai */}
-          <AnimateOnScroll>
-            <motion.section
-              initial={{ opacity: 0, y: 50 }}
+          <motion.section
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+            className="relative py-20 px-6 overflow-hidden"
+          >
+            {/* Background Layer */}
+            <div className="absolute inset-0">
+              {/* Gradient halus */}
+              <div
+                className={`absolute inset-0 bg-gradient-to-b from-white via-[${THEMES[theme].cta}] to-[#f5f5f5]`}
+              />
+
+              {/* Pattern floral tipis */}
+              <div
+                className="absolute inset-0 opacity-[0.07]"
+                style={{
+                  backgroundImage: "url('/asset/pattern-floral.png')",
+                  backgroundRepeat: "repeat",
+                  backgroundSize: "300px",
+                }}
+              />
+
+              {/* Overlay cahaya */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-white/60 blur-3xl rounded-full opacity-40" />
+            </div>
+
+            {/* Judul Section */}
+            <motion.div
+              initial={{ opacity: 0, y: -30 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.3 }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="py-20 px-6 relative bg-gradient-to-b from-white to-[#faf6f5] overflow-hidden"
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: true }}
+              className="relative text-center mb-16 z-10"
             >
-              {/* Judul Section */}
+              <h2
+                className={`font-[var(--font-playfair)] text-3xl md:text-5xl ${THEMES[theme].textMain} mb-4 tracking-wide relative inline-block`}
+              >
+                <span
+                  className={`px-6 py-2 border-y-2 border-[var(--color-primary)] ${THEMES[theme].textMain}`}
+                >
+                  Profil Mempelai
+                </span>
+              </h2>
+              <p
+                className={`${THEMES[theme].textMain} text-sm md:text-base mt-4`}
+              >
+                Dengan memohon rahmat dan ridho Allah SWT, perkenankanlah kami
+                mempersembahkan kisah bahagia ini
+              </p>
+            </motion.div>
+
+            {/* Grid Profile */}
+            <div className="relative grid md:grid-cols-2 gap-12 max-w-5xl mx-auto z-10">
+              {/* Mempelai Wanita */}
               <motion.div
-                initial={{ opacity: 0, y: -30 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, x: -60 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, ease: "easeOut" }}
                 viewport={{ once: true }}
-                className="text-center mb-16 relative"
+                whileHover={{ scale: 1.03 }}
+                className="relative flex flex-col items-center text-center bg-white p-8 rounded-2xl shadow-xl border border-pink-200"
               >
-                <h2 className="font-[var(--font-playfair)] text-3xl md:text-5xl text-gray-800 mb-4 tracking-wide relative inline-block">
-                  <span className="px-6 py-2 border-y-2 border-[var(--color-primary)]">
-                    Profil Mempelai
-                  </span>
-                </h2>
-                <p className="text-gray-600 text-sm md:text-base mt-4">
-                  Dengan memohon rahmat dan ridho Allah SWT, perkenankanlah kami
-                  mempersembahkan kisah bahagia ini
+                <div className="relative w-40 h-40 md:w-52 md:h-52 mb-6">
+                  <Image
+                    src="/profil/mempelai-wanita.png"
+                    alt="Mempelai Wanita"
+                    fill
+                    className="rounded-full object-cover border-4 border-[var(--color-primary)] shadow-lg"
+                  />
+                </div>
+                <h3 className="font-[var(--font-vibes)] text-3xl text-gray-800">
+                  Anissa Putri
+                </h3>
+                <p className="text-gray-500 text-sm mb-2">
+                  Putri dari Bapak Ahmad & Ibu Siti
+                </p>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-md">
+                  Seorang wanita penyayang, penuh perhatian, dan selalu ceria
+                  yang kini siap melangkah menuju babak baru kehidupannya.
                 </p>
               </motion.div>
 
-              {/* Grid Profile */}
-              <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-                {/* Mempelai Wanita */}
-                <motion.div
-                  initial={{ opacity: 0, x: -60 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.03 }}
-                  className="relative flex flex-col items-center text-center bg-white p-8 rounded-2xl shadow-xl border border-pink-200"
-                >
-                  {/* Frame Emas */}
-                  <div
-                    className={`absolute inset-0 rounded-2xl border-2 ${THEMES[theme].border} pointer-events-none`}
-                  ></div>
-
-                  <div className="relative w-40 h-40 md:w-52 md:h-52 mb-6">
-                    <Image
-                      src="/profil/mempelai-wanita.png"
-                      alt="Mempelai Wanita"
-                      fill
-                      className="rounded-full object-cover border-4 border-[var(--color-primary)] shadow-lg"
-                    />
-                  </div>
-                  <h3 className="font-[var(--font-vibes)] text-3xl text-gray-800">
-                    Anissa Putri
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-2">
-                    Putri dari Bapak Ahmad & Ibu Siti
-                  </p>
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-md">
-                    Seorang wanita penyayang, penuh perhatian, dan selalu ceria
-                    yang kini siap melangkah menuju babak baru kehidupannya.
-                  </p>
-                </motion.div>
-
-                {/* Mempelai Pria */}
-                <motion.div
-                  initial={{ opacity: 0, x: 60 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 1, ease: "easeOut" }}
-                  viewport={{ once: true }}
-                  whileHover={{ scale: 1.03 }}
-                  className="relative flex flex-col items-center text-center bg-white p-8 rounded-2xl shadow-xl border border-blue-200"
-                >
-                  {/* Frame Emas */}
-                  <div
-                    className={`absolute inset-0 rounded-2xl border-2 ${THEMES[theme].border} pointer-events-none`}
-                  ></div>
-
-                  <div className="relative w-40 h-40 md:w-52 md:h-52 mb-6">
-                    <Image
-                      src="/profil/mempelai-pria.png"
-                      alt="Mempelai Pria"
-                      fill
-                      className="rounded-full object-cover border-4 border-[var(--color-primary)] shadow-lg"
-                    />
-                  </div>
-                  <h3 className="font-[var(--font-vibes)] text-3xl text-gray-800">
-                    Vidi Lukman
-                  </h3>
-                  <p className="text-gray-500 text-sm mb-2">
-                    Putra dari Bapak Yusuf & Ibu Aminah
-                  </p>
-                  <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-md">
-                    Seorang pria sederhana, penuh tanggung jawab, dan sabar yang
-                    telah menemukan belahan jiwanya.
-                  </p>
-                </motion.div>
-              </div>
-
-              {/* Ornamen Dekorasi */}
-              <motion.img
-                src="/asset/florar.png"
-                alt="ornamen kiri"
-                className="absolute top-10 left-0 w-28 md:w-48 opacity-60 pointer-events-none"
-                initial={{ opacity: 0, x: -50, rotate: -10 }}
-                whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+              {/* Mempelai Pria */}
+              <motion.div
+                initial={{ opacity: 0, x: 60 }}
+                whileInView={{ opacity: 1, x: 0 }}
                 transition={{ duration: 1, ease: "easeOut" }}
                 viewport={{ once: true }}
-              />
-              <motion.img
-                src="/asset/florar.png"
-                alt="ornamen kanan"
-                className="absolute bottom-10 right-0 w-32 md:w-48 opacity-60 pointer-events-none"
-                initial={{ opacity: 0, x: 50, rotate: 10 }}
-                whileInView={{ opacity: 1, x: 0, rotate: 0 }}
-                transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-                viewport={{ once: true }}
-              />
-            </motion.section>
-          </AnimateOnScroll>
+                whileHover={{ scale: 1.03 }}
+                className="relative flex flex-col items-center text-center bg-white p-8 rounded-2xl shadow-xl border border-blue-200"
+              >
+                <div className="relative w-40 h-40 md:w-52 md:h-52 mb-6">
+                  <Image
+                    src="/profil/mempelai-pria.png"
+                    alt="Mempelai Pria"
+                    fill
+                    className="rounded-full object-cover border-4 border-[var(--color-primary)] shadow-lg"
+                  />
+                </div>
+                <h3 className="font-[var(--font-vibes)] text-3xl text-gray-800">
+                  Vidi Lukman
+                </h3>
+                <p className="text-gray-500 text-sm mb-2">
+                  Putra dari Bapak Yusuf & Ibu Aminah
+                </p>
+                <p className="text-gray-600 text-sm md:text-base leading-relaxed max-w-md">
+                  Seorang pria sederhana, penuh tanggung jawab, dan sabar yang
+                  telah menemukan belahan jiwanya.
+                </p>
+              </motion.div>
+            </div>
+
+            {/* Ornamen Dekorasi Parallax */}
+            <motion.img
+              src="/asset/florar.png"
+              alt="ornamen kiri"
+              className="absolute top-10 left-0 w-28 md:w-48 opacity-50 pointer-events-none"
+              initial={{ opacity: 0, x: -50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: "easeOut" }}
+              viewport={{ once: true }}
+            />
+            <motion.img
+              src="/asset/florar.png"
+              alt="ornamen kanan"
+              className="absolute bottom-10 right-0 w-32 md:w-48 opacity-50 pointer-events-none"
+              initial={{ opacity: 0, x: 50 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
+              viewport={{ once: true }}
+            />
+          </motion.section>
 
           {/* Love Story Timeline */}
           <motion.section
