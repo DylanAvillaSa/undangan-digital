@@ -90,6 +90,13 @@ const templates = [
     paket: "Platinum",
     link: "/template-undangan/template-13",
   },
+  {
+    id: 13,
+    image: "/template/template-14.png",
+    name: "Template 02",
+    paket: "Platinum",
+    link: "/template-undangan/template-14",
+  },
 ];
 
 const PilihTemplatePage = () => {
