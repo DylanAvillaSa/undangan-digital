@@ -3,9 +3,8 @@
 import Image from "next/image";
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Volume2, VolumeX } from "lucide-react"; // pake lucide-react biar dapet icon
+import { Volume2, VolumeX, ChevronRight } from "lucide-react";
 import BottomNavigation from "@/components/navigation/NavBottom";
-import { ChevronRight } from "lucide-react"; // icon panah
 
 const PlatinumTemplate2 = () => {
   const audioRef = useRef(null);
@@ -14,83 +13,60 @@ const PlatinumTemplate2 = () => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [mainMenuPlay, setMenuPlay] = useState(false);
   const [showVideo, setShowVideo] = useState(true);
+  const [bgVideoLoaded, setBgVideoLoaded] = useState(false);
 
+  // Animasi container
   const containerVariants = {
-    hidden: { opacity: 0, scale: 0.9 },
+    hidden: { opacity: 0, scale: 0.95 },
     visible: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 1,
-        ease: "easeOut",
-        staggerChildren: 0.2, // animasi anak-anak berurutan
-      },
+      transition: { duration: 0.8, staggerChildren: 0.15 },
     },
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 50, rotate: -5 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      rotate: 0,
-      transition: { duration: 0.8, ease: "easeOut" },
-    },
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
-  // Auto play ketika undangan dibuka
+  // Video animasi
+  const videoVariants = {
+    hidden: { opacity: 0, scale: 0.95 },
+    visible: { opacity: 1, scale: 1, transition: { duration: 1 } },
+    exit: { opacity: 0, scale: 0.9, transition: { duration: 1 } },
+  };
+
   useEffect(() => {
     if (opened && audioRef.current) {
-      audioRef.current.play();
+      audioRef.current.play().catch(() => {});
       setIsPlaying(true);
     }
   }, [opened]);
 
-  const videoVariants = {
-    hidden: { opacity: 0, scale: 0.9, y: 50, filter: "blur(10px)" },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      filter: "blur(0px)",
-      transition: { duration: 1, ease: "easeOut" },
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.8,
-      y: -100,
-      filter: "blur(20px)",
-      transition: { duration: 1.2, ease: "easeInOut" },
-    },
-  };
-
   const toggleMusic = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        audioRef.current.play();
-      }
-      setIsPlaying(!isPlaying);
-    }
+    if (!audioRef.current) return;
+    if (isPlaying) audioRef.current.pause();
+    else audioRef.current.play().catch(() => {});
+    setIsPlaying(!isPlaying);
   };
 
-  const handleVideo = (e) => {
+  const handleVideoEnd = () => {
     setShowVideo(false);
     setMenuPlay(true);
   };
 
   return (
-    <section>
+    <section className="relative w-full h-screen overflow-hidden">
       {/* === Halaman Cover === */}
       <AnimatePresence>
         {!opened && (
           <motion.div
-            initial={{ y: 0 }}
-            animate={{ y: 0 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             exit={{ y: -850, opacity: 0 }}
-            transition={{ duration: 1.5 }}
-            className="relative w-full min-h-screen flex flex-col justify-center items-center text-white gap-5"
+            transition={{ duration: 1.2 }}
+            className="absolute inset-0 flex flex-col justify-center items-center text-white gap-5"
           >
             <div className="absolute inset-0 bg-[#ead7b3]/40 mix-blend-multiply" />
             <div className="bg-[url(/images/prewed-1.jpg)] w-full h-full bg-cover bg-center absolute inset-0" />
@@ -115,18 +91,19 @@ const PlatinumTemplate2 = () => {
       <AnimatePresence>
         {opened && (
           <motion.div
-            initial={{ opacity: 0, y: 500 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 300 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
             className="fixed top-0 left-0 w-full h-full z-0 overflow-hidden"
           >
             <BottomNavigation />
 
+            {/* Video Animasi Pembuka */}
             <AnimatePresence>
               {showVideo && (
                 <motion.div
-                  className="fixed top-0 left-0 w-full h-full z-0 overflow-hidden"
+                  className="fixed inset-0 w-full h-full z-0"
                   variants={videoVariants}
                   initial="hidden"
                   animate="visible"
@@ -134,11 +111,12 @@ const PlatinumTemplate2 = () => {
                 >
                   <video
                     ref={videoRef}
-                    className="w-auto h-full object-cover"
+                    className="w-full h-full object-cover"
                     autoPlay
                     muted
                     playsInline
-                    onEnded={handleVideo}
+                    preload="auto"
+                    onEnded={handleVideoEnd}
                   >
                     <source src="/animasi.mp4" type="video/mp4" />
                     Browser kamu tidak mendukung video tag.
@@ -147,6 +125,7 @@ const PlatinumTemplate2 = () => {
               )}
             </AnimatePresence>
 
+            {/* Main Menu dengan Background Video */}
             <AnimatePresence>
               {mainMenuPlay && (
                 <motion.div
@@ -160,30 +139,27 @@ const PlatinumTemplate2 = () => {
                   {/* Background Video */}
                   <video
                     className="absolute inset-0 w-full h-full object-cover -z-10"
-                    autoPlay
+                    autoPlay={bgVideoLoaded}
                     muted
                     playsInline
+                    preload="auto"
+                    onCanPlay={() => setBgVideoLoaded(true)}
                   >
                     <source src="/latar-dalam.mp4" type="video/mp4" />
-                    Browser kamu tidak mendukung video tag.
                   </video>
 
                   {/* Section 1 */}
                   <motion.section
-                    initial={{ rotateY: 90, opacity: 0 }}
-                    whileInView={{ rotateY: 0, opacity: 1 }}
-                    transition={{ duration: 1, ease: "easeOut" }}
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
                     viewport={{ once: false, amount: 0.5 }}
-                    style={{ transformOrigin: "right center" }}
-                    className="relative flex-shrink-0 w-screen h-screen snap-center flex flex-col gap-5 items-center justify-center text-white text-shadow-2xs"
+                    className="relative flex-shrink-0 w-screen h-screen snap-center flex flex-col gap-5 items-center justify-center text-white text-shadow-2xs will-change-transform"
                   >
-                    {/* Overlay khusus biar cuma background yg transparan */}
                     <div className="absolute inset-0 bg-black/15 -z-10"></div>
-
                     <motion.h2 className="text-xl md:text-2xl">
                       The Wedding Of
                     </motion.h2>
-
                     <motion.div>
                       <Image
                         src="/images/prewed-1.jpg"
@@ -194,12 +170,9 @@ const PlatinumTemplate2 = () => {
                         className="object-cover w-[200px] h-[200px] md:w-[300px] md:h-[300px] rounded-full shadow-2xl"
                       />
                     </motion.div>
-
                     <motion.h1 className="text-3xl md:text-5xl font-bold drop-shadow-lg">
                       Vidi & Riffany
                     </motion.h1>
-
-                    {/* Indikator Scroll ke Kanan */}
                     <motion.div
                       className="absolute bottom-10 right-5 flex items-center gap-2"
                       animate={{ x: [0, 10, 0] }}
