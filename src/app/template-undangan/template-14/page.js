@@ -92,17 +92,17 @@ const PlatinumTemplate2 = () => {
             transition={{ duration: 1.5 }}
             className="relative w-full min-h-screen flex flex-col justify-center items-center text-white gap-5"
           >
-            <div className="absolute inset-0 bg-red-600/40 mix-blend-multiply" />
+            <div className="absolute inset-0 bg-[#ead7b3]/40 mix-blend-multiply" />
             <div className="bg-[url(/images/prewed-1.jpg)] w-full h-full bg-cover bg-center absolute inset-0" />
 
             <article className="relative z-10 flex flex-col gap-5 items-center">
               <h3 className="font-semibold">The Wedding Of</h3>
               <h2 className="font-bold text-2xl">Vidi & Riffany</h2>
               <p>Dear :</p>
-              <h3 className="text-rose-800">Nama Tamu</h3>
+              <h3 className="text-[#ead7b3]">Nama Tamu</h3>
               <button
                 onClick={() => setOpened(true)}
-                className="py-2 px-3 bg-rose-800 text-white rounded-md hover:bg-rose-700"
+                className="py-2 px-3 bg-[#ead7b3] text-white rounded-md hover:bg-[#dfc89c]"
               >
                 Buka undangan
               </button>
@@ -155,21 +155,31 @@ const PlatinumTemplate2 = () => {
                   initial="hidden"
                   animate="visible"
                   exit="hidden"
+                  style={{ perspective: "1200px" }}
                 >
                   {/* Background Video */}
                   <video
                     className="absolute inset-0 w-full h-full object-cover -z-10"
                     autoPlay
-                    loop
                     muted
                     playsInline
                   >
-                    <source src="/background.mp4" type="video/mp4" />
+                    <source src="/latar-dalam.mp4" type="video/mp4" />
                     Browser kamu tidak mendukung video tag.
                   </video>
 
                   {/* Section 1 */}
-                  <section className="flex-shrink-0 w-screen h-screen snap-center flex flex-col gap-5 items-center justify-center text-white text-shadow-2xs">
+                  <motion.section
+                    initial={{ rotateY: 90, opacity: 0 }}
+                    whileInView={{ rotateY: 0, opacity: 1 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    viewport={{ once: false, amount: 0.5 }}
+                    style={{ transformOrigin: "right center" }}
+                    className="relative flex-shrink-0 w-screen h-screen snap-center flex flex-col gap-5 items-center justify-center text-white text-shadow-2xs"
+                  >
+                    {/* Overlay khusus biar cuma background yg transparan */}
+                    <div className="absolute inset-0 bg-black/15 -z-10"></div>
+
                     <motion.h2 className="text-xl md:text-2xl">
                       The Wedding Of
                     </motion.h2>
@@ -181,7 +191,7 @@ const PlatinumTemplate2 = () => {
                         width={700}
                         height={700}
                         priority
-                        className="object-cover w-[200px] h-[200px] md:w-[300px] md:h-[300px] rounded-r-full rounded-bl-full shadow-2xl"
+                        className="object-cover w-[200px] h-[200px] md:w-[300px] md:h-[300px] rounded-full shadow-2xl"
                       />
                     </motion.div>
 
@@ -204,10 +214,17 @@ const PlatinumTemplate2 = () => {
                       </span>
                       <ChevronRight className="w-6 h-6 text-white" />
                     </motion.div>
-                  </section>
+                  </motion.section>
 
                   {/* Section 2 - QS Ar-Rum */}
-                  <section className="relative flex-shrink-0 w-screen h-screen snap-center flex flex-col items-center justify-center overflow-hidden bg-[url(/asset/bg.png)] bg-cover text-slate-950 px-6">
+                  <motion.section
+                    initial={{ rotateY: -90, opacity: 0 }}
+                    whileInView={{ rotateY: 0, opacity: 1 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    viewport={{ once: false, amount: 0.5 }}
+                    style={{ transformOrigin: "right center" }}
+                    className="relative flex-shrink-0 w-screen h-screen snap-center flex flex-col items-center justify-center overflow-hidden bg-[url(/asset/bg.png)] bg-cover text-slate-950 px-6"
+                  >
                     {/* Ornamen Background Blur */}
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -259,22 +276,17 @@ const PlatinumTemplate2 = () => {
                       transition={{ duration: 2, delay: 1 }}
                       className="mt-10 w-32 h-[2px] bg-white/70 rounded-full"
                     />
-                  </section>
+                  </motion.section>
 
                   {/* Section 3 - Ucapan Salam & Nama Mempelai */}
-                  <section className="flex-shrink-0 w-screen h-screen snap-center relative flex flex-col items-center justify-center text-center px-6 overflow-hidden ">
-                    {/* Background Video */}
-                    <video
-                      className="absolute inset-0 w-full h-full object-cover -z-10"
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                    >
-                      <source src="/cover.mp4" type="video/mp4" />
-                      Browser kamu tidak mendukung video tag.
-                    </video>
-
+                  <motion.section
+                    initial={{ rotateY: -90, opacity: 0 }}
+                    whileInView={{ rotateY: 0, opacity: 1 }}
+                    transition={{ duration: 1, ease: "easeOut" }}
+                    viewport={{ once: false, amount: 0.5 }}
+                    style={{ transformOrigin: "right center" }}
+                    className="flex-shrink-0 w-screen h-screen snap-center bg-cover relative flex flex-col items-center justify-center bg-[url(/images/bg1.png)] text-center px-6 overflow-hidden"
+                  >
                     {/* Ucapan Salam */}
                     <motion.h2
                       initial={{ opacity: 0, y: -20 }}
@@ -316,7 +328,7 @@ const PlatinumTemplate2 = () => {
                         </h1>
                       </div>
 
-                      <span className="text-3xl md:text-5xl font-bold text-[#ead7bf]">
+                      <span className="text-3xl md:text-5xl font-bold text-[#cbaa82]">
                         &
                       </span>
 
@@ -341,7 +353,7 @@ const PlatinumTemplate2 = () => {
                     >
                       Wassalamu’alaikum Warahmatullahi Wabarakatuh
                     </motion.p>
-                  </section>
+                  </motion.section>
                 </motion.div>
               )}
             </AnimatePresence>
